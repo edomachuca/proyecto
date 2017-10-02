@@ -10,6 +10,9 @@ package listas;
  * @author BSOD
  */
 
+//ESTA CLASE PUEDE SER BORRADA!
+//PRUEBA DE CONEXIÓN GITHUB
+
 import java.util.Date;
 import proyectobanco.Fecha;
 
