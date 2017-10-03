@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package proyectobanco;
+package Datos;
 
 import listas.NoDato;
 import listas.Cliente;
@@ -26,18 +26,19 @@ import java.util.Date;
  * @author BSOD
  */
 
-public class IOEstrategia {
+public class IOLocal implements IOD{
 
     private String nomArchivo;
     private List clientes;
     private Lista inversiones;
 
-    public IOEstrategia(String nombre) throws NoDato, IOException, NumberFormatException {
+    public IOLocal(String nombre) throws NoDato, IOException, NumberFormatException {
         nomArchivo = nombre;
         clientes = new ArrayList();
         inversiones = new Lista();
     }
 
+    @Override
     public Lista Lectura() throws IOException, NoDato, NumberFormatException {
         FileInputStream file = new FileInputStream(nomArchivo);
         XSSFWorkbook libro = new XSSFWorkbook(file);
@@ -60,12 +61,8 @@ public class IOEstrategia {
                 }
 
             }
-            if (j != 0) {
-                Cliente c = new Cliente(df.get(1), df.get(2));
-                if (!clientes.contains(c)) {
-                    clientes.add(c);
-                }
-                inversiones.add(new Inversion(clientes.indexOf(c), (int) Double.parseDouble(df.get(0)), df.get(3), (int) Double.parseDouble(df.get(4)), Double.parseDouble(df.get(5)), df.get(7), df.get(8), df.get(9)));
+            if (j != 0) {              
+            agregarDato(df);
             }
             j++;
         }
@@ -73,6 +70,14 @@ public class IOEstrategia {
             file.close();
         }
         return inversiones;
+    }
+    
+    private void agregarDato(List<String> df){
+        Cliente c = new Cliente(df.get(1), df.get(2));
+        if (!clientes.contains(c)) {
+            clientes.add(c);
+        }
+        inversiones.add(new Inversion(clientes.indexOf(c), (int) Double.parseDouble(df.get(0)), df.get(3), (int) Double.parseDouble(df.get(4)), Double.parseDouble(df.get(5)), df.get(7), df.get(8), df.get(9)));
     }
 
     private String agregarCelda(XSSFCell cell) throws NoDato {
@@ -82,6 +87,7 @@ public class IOEstrategia {
         return cell.toString();
     }
 
+    @Override    
     public void Escritura(String[][] p, String[][] q) {
         XSSFWorkbook libro = new XSSFWorkbook();
         XSSFSheet hoja = libro.createSheet("Tabla de frecuencias");

@@ -31,7 +31,6 @@ public class Fecha {
         return ConvertirFecha(fec_fin);
     }
     
-    
     private Date ConvertirFecha(String fecha){
         if(fecha==null)
             return null;

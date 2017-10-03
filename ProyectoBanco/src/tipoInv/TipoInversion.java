@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import listas.Inversion;
 import listas.Lista;
-import proyectobanco.IOEstrategia;
+import Datos.IOLocal;
 
 /**
  *
@@ -23,11 +23,11 @@ public class TipoInversion extends GestorDatos {
     private ArrayList filtro;
     private String ini, fin;
     private String tip;
-    private IOEstrategia archivo;
+    private IOLocal archivo;
 
     public TipoInversion(String arch, String i, String f, String t) throws IOException, NoDato {
         try {
-            archivo = new IOEstrategia(arch);
+            archivo = new IOLocal(arch);
             datos = archivo.Lectura();
             ini = i;
             fin = f;
@@ -38,7 +38,7 @@ public class TipoInversion extends GestorDatos {
         }
     }
 
-    public IOEstrategia getArchivo() {
+    public IOLocal getArchivo() {
         return archivo;
     }
 

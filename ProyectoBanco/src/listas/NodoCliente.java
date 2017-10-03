@@ -9,8 +9,11 @@ package listas;
  *
  * @author BSOD
  */
+
+//ESTA CLASE TAMBIEN PUEDE SER BORRADA
 public class NodoCliente {
 
+    
     private Cliente dato;
     private NodoCliente next;
 

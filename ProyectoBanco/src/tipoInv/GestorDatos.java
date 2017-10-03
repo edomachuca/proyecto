@@ -2,7 +2,7 @@ package tipoInv;
 
 import listas.Inversion;
 import java.util.*;
-import proyectobanco.IOEstrategia;
+import Datos.IOLocal;
 /**
  *
  * @author BSOD
@@ -13,7 +13,7 @@ public abstract class GestorDatos {
 
     public abstract ArrayList Filtro();
 
-    public abstract IOEstrategia getArchivo();
+    public abstract IOLocal getArchivo();
 
     protected void quickSort(ArrayList e, int izq, int der) {
         Inversion piv = (Inversion) e.get(izq);

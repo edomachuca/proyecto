@@ -4,6 +4,7 @@ package proyectobanco;
  *
  * @author BSOD
  */
+import Datos.*;
 import estadistica.*;
 import listas.NoDato;
 import java.io.*;
@@ -13,8 +14,11 @@ import tipoInv.GestorDatos;
 
 public class ProyectoBanco {
 
-    public static void main(String[] args) throws IOException, NoDato, InterruptedException {
+    public static void main(String[] args) throws IOException, NoDato, InterruptedException, Exception {
         
+        
+        
+        IOExt conn=new IOExt("","root","");
         
         //Cambios
         

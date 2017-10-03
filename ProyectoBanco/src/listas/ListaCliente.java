@@ -4,6 +4,9 @@ package listas;
  *
  * @author BSOD
  */
+
+// ESTA CLASE TAMBIEN PEUDE SER BORRADA
+
 public class ListaCliente implements ListaC {
 
     private NodoCliente head;
