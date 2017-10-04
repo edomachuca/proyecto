@@ -103,6 +103,7 @@ public class TablaHistograma extends Calculos {
         return super.getgDatos().Filtro();
     }
 
+    
     @Override
     public IOContexto getArchivo() {
         return super.getgDatos().getArchivo();
