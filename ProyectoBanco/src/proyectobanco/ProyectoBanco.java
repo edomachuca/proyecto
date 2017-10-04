@@ -46,7 +46,8 @@ public class ProyectoBanco {
         legacy = new TendenciaCentral(legacy);
         String[][] q = legacy.informe();
         //Escribimos el informe en el archivo de salida (Excel)
-        legacy.getArchivo().Escritura(p, q);
+        legacy.getArchivo().Escritura(p,"Tabla de frecuencias_"+x.getTipo());
+        legacy.getArchivo().Escritura(q);
         //Se finaliza la aplicación (menú)
         x.cambiarEstado();
         

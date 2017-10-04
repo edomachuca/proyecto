@@ -26,9 +26,12 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  * @author Mazhuka
  */
 public class IOLocal extends IOContexto {
-
+    
+    private XSSFWorkbook libro;
+    
     public IOLocal(String nombre) throws NoDato, IOException {
         super(nombre);
+        libro = new XSSFWorkbook();
     }
 
     @Override
@@ -81,9 +84,8 @@ public class IOLocal extends IOContexto {
     }
 
     @Override
-    public void Escritura(String[][] p, String[][] q) {
-        XSSFWorkbook libro = new XSSFWorkbook();
-        XSSFSheet hoja = libro.createSheet("Tabla de frecuencias");
+    public void Escritura(String[][] p,String nombreHoja) {
+        XSSFSheet hoja = libro.createSheet(nombreHoja);
         for (int i = 0; i < p.length; i++) {
             XSSFRow fila = hoja.createRow(i);
             for (int j = 0; j < p[0].length; j++) {
@@ -99,8 +101,11 @@ public class IOLocal extends IOContexto {
                 }
                 hoja.autoSizeColumn(j);
             }
-
         }
+    }
+    
+    @Override
+    public void Escritura(String[][] q) {
         XSSFSheet hoja1 = libro.createSheet("Medidas de tendencia central");
         for (int i = 0; i < q.length; i++) {
             XSSFRow fila = hoja1.createRow(i);
@@ -115,16 +120,20 @@ public class IOLocal extends IOContexto {
                 hoja1.autoSizeColumn(j);//formato
             }
         }
+        crearLibro(libro);
+    }
+    
+    private void crearLibro(XSSFWorkbook libroEntrada){
+         
         java.util.Date fecha = new Date();
         String[] fechaV = fecha.toString().split(" ");
         String[] fechaVH = fechaV[3].split(":");
         String nfecha = fechaV[2] + "_" + fechaV[1] + "_" + fechaV[5] + "_" + fechaVH[0] + "_" + fechaVH[1] + "_" + fechaVH[2];
         try {
             FileOutputStream elFichero = new FileOutputStream("Informe_Estadístico_" + nfecha + ".xlsx");
-            libro.write(elFichero);
+            libroEntrada.write(elFichero);
             elFichero.close();
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

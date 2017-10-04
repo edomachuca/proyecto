@@ -125,8 +125,14 @@ public class IOExt extends IOContexto{
     }
 
     @Override
-    public void Escritura(String[][] p, String[][] q) {
+    public void Escritura(String[][] p, String tipo) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public void Escritura(String[][] q) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     
 }

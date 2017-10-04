@@ -36,6 +36,8 @@ public abstract class IOContexto {
 
     public abstract Lista Lectura() throws IOException, NoDato, NumberFormatException;
     
-    public abstract void Escritura(String[][] p, String[][] q);
+    public abstract void Escritura(String[][] p,String tipo);
+    public abstract void Escritura(String[][] q) ;
+
       
 }
