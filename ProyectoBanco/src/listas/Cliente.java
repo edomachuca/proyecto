@@ -9,20 +9,15 @@ package listas;
  *
  * @author BSOD
  */
-import java.util.ArrayList;
 
 public class Cliente {
 
-    private ArrayList<Inversion> inversiones;
-    private String cod_cli; //key
-    private String nom_cli;
-    private int cant_inv;
+    private final String cod_cli; //key
+    private final String nom_cli;
 
     public Cliente(String cod, String nom) {
         cod_cli = cod;
         nom_cli = nom;
-        inversiones = new ArrayList();
-        cant_inv = 0;
     }
 
     public String getCod() {
@@ -33,12 +28,6 @@ public class Cliente {
         return nom_cli;
     }
 
-    public int getCant() {
-        return cant_inv;
-    }
 
-    void agregarInversion(InversionCliente inv) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
 }
