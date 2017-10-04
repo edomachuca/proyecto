@@ -69,7 +69,7 @@ public class IOExt extends IOContexto{
                 System.out.println("\tDatabase Version: " + dm.getDatabaseProductVersion());
                 System.out.println("\tNombre DB: "+dm.getDatabaseProductName());
                 Statement select = conn.createStatement();
-                result = select.executeQuery("SELECT * FROM tabla");
+                result = select.executeQuery("SELECT * FROM Clientes");
 
                 while (result.next()) {
                     System.out.println("id: " + result.getString(1) + "\n");
