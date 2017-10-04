@@ -32,12 +32,13 @@ public class TipoInversion extends GestorDatos {
             ini = i;
             fin = f;
             tip = t;
-            filtro = Filtro();
+            filtro = setFiltro();
         } catch (NullPointerException e) {
             System.out.println("El archivo no existe.");
         }
     }
 
+    @Override
     public IOLocal getArchivo() {
         return archivo;
     }
@@ -49,6 +50,10 @@ public class TipoInversion extends GestorDatos {
 
     @Override
     public ArrayList Filtro() {
+        return filtro;
+    }
+    
+    private ArrayList setFiltro() {
         Date i = ConvertirFecha(ini);
         Date f = ConvertirFecha(fin);
         ArrayList entrega = new ArrayList();
@@ -86,15 +91,15 @@ public class TipoInversion extends GestorDatos {
             datos.next();
         }
         Inversion def=new Inversion(0, 0, "GR", 0, 0, "00-ene-0000","00-ene-0000", "00-ene-0000");
-        if (entrega.size() == 0 ) 
+        if (entrega.isEmpty() ) 
             entrega.add(def);
-        if(filtroTipo[0].size()==0)
+        if(filtroTipo[0].isEmpty())
             filtroTipo[0].add(def);
-        if(filtroTipo[1].size()==0)
+        if(filtroTipo[1].isEmpty())
             filtroTipo[1].add(def);
-        if(filtroTipo[2].size()==0)
+        if(filtroTipo[2].isEmpty())
             filtroTipo[2].add(def);
-        if(filtroTipo[3].size()==0)
+        if(filtroTipo[3].isEmpty())
             filtroTipo[3].add(def);
         
         if (tip.equals("GR")) {
