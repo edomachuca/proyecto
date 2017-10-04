@@ -19,7 +19,7 @@ public abstract class Calculos extends GestorDatos {
     private double desviacion;
     private double coefVar;
     private double MediaT;
-    private int k;
+    private final int k;
     private String[][] histograma;
     private String[][] datos;
     private String[][] tabla;
