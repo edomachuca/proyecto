@@ -29,10 +29,13 @@ public class IOExt extends IOContexto{
         String path="jdbc:mysql://localhost/";
         conectar(path+dbName,user,pass);
         //INSERTAR CODIGO AQUI
-       
-        crearTabla("Nombres_desde_java");
-        insertarDato("tabla","Pepito");
-        insertarDato("tabla","Juanito");
+        crearDB(nombre);
+        crearTabla("Inversiones","id_inv INT NOT NULL, mon_inv INT, tasa_int DOUBLE, mon_rec INT, Primary KEY (id_inv)");
+        crearTabla("Clientes","cod_cli INT NOT NULL, nom_cli TEXT, Primary KEY (cod_cli)");
+        crearTabla("Actividad","id_inv INT NOT NULL, cod_cli INT NOT NULL, fec_inv DATE, fec_fin DATE, fec_cier DATE, Primary KEY (id_inv)");
+        
+        insertarDato("Inversiones","id_inv, mon_inv, tasa_int, mon_rec","'2015','555555','4.4','999999'");
+        insertarDato("Clientes","cod_cli, nom_cli","123, 'juanito'");
         
         mostrarPropiedades();
         //
@@ -94,7 +97,7 @@ public class IOExt extends IOContexto{
         }
     }
     
-    private void crearTabla(String nombre){
+    private void crearDB(String nombre){
         try{
         Statement st=conn.createStatement();
             try{
@@ -104,18 +107,32 @@ public class IOExt extends IOContexto{
             }
             st.executeUpdate("CREATE DATABASE "+ nombre);
             st.executeUpdate("USE "+nombre);
-            st.executeUpdate("CREATE TABLE tabla (id INT NOT NULL AUTO_INCREMENT, nombre Text, Primary KEY (id));");
+            //st.executeUpdate("CREATE TABLE tabla (id INT NOT NULL AUTO_INCREMENT, nombre Text, Primary KEY (id));");
         }catch(Exception e){
             System.out.println("ERROR en Crear");}
         
     }
     
-    private void insertarDato(String table, String nom){
+    private void crearTabla(String nombre,String Att){
+        try{
+        Statement st=conn.createStatement();
+            try{
+                st.executeUpdate("DROP TABLE "+nombre);
+            }catch(SQLException e){
+                //System.out.println("La BD no Existe");
+            }
+            st.executeUpdate("CREATE TABLE "+nombre+" ("+Att+");");
+        }catch(Exception e){
+            System.out.println("ERROR en Crear");}
+        
+    }
+    
+    private void insertarDato(String table, String Atts,String dats){
         try{
             Statement insertar=conn.createStatement();
-            insertar.executeUpdate("INSERT INTO "+table+" (nombre) VALUES('"+nom+"')");
+            insertar.executeUpdate("INSERT INTO "+table+" ("+Atts+") VALUES("+dats+")");
         }catch(Exception e){
-            System.out.println("error Insertar: TABLA: "+table+", objeto: "+nom);}
+            System.out.println("error Insertar: TABLA: "+table+", objeto: "+dats);}
        
     }
     

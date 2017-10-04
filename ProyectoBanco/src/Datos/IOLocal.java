@@ -27,11 +27,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public class IOLocal extends IOContexto {
     
-    private XSSFWorkbook libro;
+    private XSSFWorkbook libroOut;
     
     public IOLocal(String nombre) throws NoDato, IOException {
         super(nombre);
-        libro = new XSSFWorkbook();
+        libroOut = new XSSFWorkbook();
     }
 
     @Override
@@ -85,7 +85,7 @@ public class IOLocal extends IOContexto {
 
     @Override
     public void Escritura(String[][] p,String nombreHoja) {
-        XSSFSheet hoja = libro.createSheet(nombreHoja);
+        XSSFSheet hoja = libroOut.createSheet(nombreHoja);
         for (int i = 0; i < p.length; i++) {
             XSSFRow fila = hoja.createRow(i);
             for (int j = 0; j < p[0].length; j++) {
@@ -106,7 +106,7 @@ public class IOLocal extends IOContexto {
     
     @Override
     public void Escritura(String[][] q) {
-        XSSFSheet hoja1 = libro.createSheet("Medidas de tendencia central");
+        XSSFSheet hoja1 = libroOut.createSheet("Medidas de tendencia central");
         for (int i = 0; i < q.length; i++) {
             XSSFRow fila = hoja1.createRow(i);
             for (int j = 0; j < q[0].length; j++) {
@@ -120,7 +120,7 @@ public class IOLocal extends IOContexto {
                 hoja1.autoSizeColumn(j);//formato
             }
         }
-        crearLibro(libro);
+        crearLibro(libroOut);
     }
     
     private void crearLibro(XSSFWorkbook libroEntrada){

@@ -18,7 +18,7 @@ public class ProyectoBanco {
         
         
         
-        IOContexto conn=new IOExt("","","root","");
+        IOContexto conn=new IOExt("Banco","","root","");
         
         //Cambios
         
@@ -48,6 +48,7 @@ public class ProyectoBanco {
         //Escribimos el informe en el archivo de salida (Excel)
         legacy.getArchivo().Escritura(p,"Tabla de frecuencias_"+x.getTipo());
         legacy.getArchivo().Escritura(q);
+        System.out.println(legacy.getArchivo().toString());
         //Se finaliza la aplicación (menú)
         x.cambiarEstado();
         
