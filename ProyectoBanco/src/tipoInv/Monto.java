@@ -6,7 +6,7 @@
 package tipoInv;
 
 import java.util.ArrayList;
-import Datos.IOLocal;
+import Datos.IOContexto;
 
 /**
  *
@@ -25,7 +25,7 @@ public class Monto extends GestorDatos {
     }
 
     @Override
-    public IOLocal getArchivo() {
+    public IOContexto getArchivo() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

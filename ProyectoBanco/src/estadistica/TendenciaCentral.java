@@ -1,7 +1,7 @@
 package estadistica;
 
 import java.util.ArrayList;
-import Datos.IOLocal;
+import Datos.IOContexto;
 import tipoInv.GestorDatos;
 
 /**
@@ -60,7 +60,7 @@ public class TendenciaCentral extends Calculos {
     }
 
     @Override
-    public IOLocal getArchivo() {
+    public IOContexto getArchivo() {
         return super.getgDatos().getArchivo();
     }
 }

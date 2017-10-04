@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
-import Datos.IOLocal;
+import Datos.IOContexto;
 import tipoInv.GestorDatos;
 
 /**
@@ -104,7 +104,7 @@ public class TablaHistograma extends Calculos {
     }
 
     @Override
-    public IOLocal getArchivo() {
+    public IOContexto getArchivo() {
         return super.getgDatos().getArchivo();
     }
 

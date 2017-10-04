@@ -20,12 +20,12 @@ import java.sql.Statement;
  *
  * @author Mazhuka
  */
-public class IOExt implements IOD {
+public class IOExt extends IOContexto{
     private Connection conn;
     private final String driver="com.mysql.jdbc.Driver";
     
-    
-    public IOExt(String dbName,String user, String pass) throws Exception{
+    public IOExt(String nombre,String dbName,String user, String pass) throws Exception{
+        super(nombre);
         String path="jdbc:mysql://localhost/";
         conectar(path+dbName,user,pass);
         //INSERTAR CODIGO AQUI
@@ -105,7 +105,7 @@ public class IOExt implements IOD {
             st.executeUpdate("CREATE DATABASE "+ nombre);
             st.executeUpdate("USE "+nombre);
             st.executeUpdate("CREATE TABLE tabla (id INT NOT NULL AUTO_INCREMENT, nombre Text, Primary KEY (id));");
-        }catch(SQLException e){
+        }catch(Exception e){
             System.out.println("ERROR en Crear");}
         
     }
@@ -114,7 +114,7 @@ public class IOExt implements IOD {
         try{
             Statement insertar=conn.createStatement();
             insertar.executeUpdate("INSERT INTO "+table+" (nombre) VALUES('"+nom+"')");
-        }catch(SQLException e){
+        }catch(Exception e){
             System.out.println("error Insertar: TABLA: "+table+", objeto: "+nom);}
        
     }

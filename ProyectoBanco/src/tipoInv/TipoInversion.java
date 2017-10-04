@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import listas.Inversion;
 import listas.Lista;
+import Datos.IOContexto;
 import Datos.IOLocal;
 
 /**
@@ -23,7 +24,7 @@ public class TipoInversion extends GestorDatos {
     private ArrayList filtro;
     private String ini, fin;
     private String tip;
-    private IOLocal archivo;
+    private IOContexto archivo;
 
     public TipoInversion(String arch, String i, String f, String t) throws IOException, NoDato {
         try {
@@ -39,7 +40,7 @@ public class TipoInversion extends GestorDatos {
     }
 
     @Override
-    public IOLocal getArchivo() {
+    public IOContexto getArchivo() {
         return archivo;
     }
 

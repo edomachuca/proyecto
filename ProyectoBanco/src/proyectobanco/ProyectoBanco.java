@@ -18,7 +18,7 @@ public class ProyectoBanco {
         
         
         
-        IOExt conn=new IOExt("","root","");
+        IOContexto conn=new IOExt("","","root","");
         
         //Cambios
         

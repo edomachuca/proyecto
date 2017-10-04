@@ -1,7 +1,7 @@
 package estadistica;
 
 import java.util.ArrayList;
-import Datos.IOLocal;
+import Datos.IOContexto;
 import tipoInv.GestorDatos;
 
 /**
@@ -20,7 +20,7 @@ public class Extras extends Calculos {
     }
 
     @Override
-    public IOLocal getArchivo() {
+    public IOContexto getArchivo() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
