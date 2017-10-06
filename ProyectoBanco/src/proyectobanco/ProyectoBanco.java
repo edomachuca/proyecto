@@ -36,9 +36,9 @@ public class ProyectoBanco {
         //Se solicita el filtro de datos según los parámetros ingresados
         
         
-        GestorDatos legacy = new TipoInversion("DatosSistemaLegacy.xlsx", x.getFechaInicio(), x.getFechaFin(), x.getTipo());
+        //GestorDatos legacy = new TipoInversion("DatosSistemaLegacy.xlsx", x.getFechaInicio(), x.getFechaFin(), x.getTipo());
         
-        //GestorDatos legacy = new TipoInversion("Banco","","root","", x.getFechaInicio(), x.getFechaFin(), x.getTipo());
+        GestorDatos legacy = new TipoInversion("Banco","","root","", x.getFechaInicio(), x.getFechaFin(), x.getTipo());
 
 
 //Se genera el informe con la tabla de frecuencias
