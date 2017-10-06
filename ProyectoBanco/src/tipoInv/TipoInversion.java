@@ -12,6 +12,7 @@ import java.util.Date;
 import listas.Inversion;
 import listas.Lista;
 import Datos.IOContexto;
+import Datos.IOExt;
 import Datos.IOLocal;
 
 /**
@@ -29,6 +30,18 @@ public class TipoInversion extends GestorDatos {
     public TipoInversion(String arch, String i, String f, String t) throws IOException, NoDato {
         try {
             archivo = new IOLocal(arch);
+            datos = archivo.Lectura();
+            ini = i;
+            fin = f;
+            tip = t;
+            filtro = setFiltro();
+        } catch (NullPointerException e) {
+            System.out.println("El archivo no existe.");
+        }
+    }
+    public TipoInversion(String nombre,String dbName,String user, String pass, String i, String f, String t) throws IOException, NoDato, Exception {
+        try {
+            archivo = new IOExt(nombre,dbName,user,pass);
             datos = archivo.Lectura();
             ini = i;
             fin = f;

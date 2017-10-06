@@ -16,6 +16,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+import listas.Cliente;
+import listas.Inversion;
+
+
 /**
  *
  * @author Mazhuka
@@ -29,17 +36,34 @@ public class IOExt extends IOContexto{
         String path="jdbc:mysql://localhost/";
         conectar(path+dbName,user,pass);
         //INSERTAR CODIGO AQUI
-        crearDB(nombre);
-        crearTabla("Inversiones","id_inv INT NOT NULL, mon_inv INT, tasa_int DOUBLE, mon_rec INT, Primary KEY (id_inv)");
-        crearTabla("Clientes","cod_cli INT NOT NULL, nom_cli TEXT, Primary KEY (cod_cli)");
-        crearTabla("Actividad","id_inv INT NOT NULL, cod_cli INT NOT NULL, fec_inv DATE, fec_fin DATE, fec_cier DATE, Primary KEY (id_inv)");
+        UsarDB(nombre);
+        crearTabla("Estadisticas",""
+                + " nro_con INT NOT NULL AUTO_INCREMENT,"
+                + " Esperanza INT,"
+                + " Varianza DOUBLE,"
+                + " Mediana INT,"
+                + " Moda INT,"
+                + " Des_stand DOUBLE,"
+                + " Coef_var DOUBLE,"
+                + " Media_T DOUBLE,"
+                + " Tipo_f varchar(3) NOT NULL,"
+                + " Fecha_i varchar(10) NOT NULL,"
+                + " fecha_f varchar(10) NOT NULL,"
+                + " Primary KEY (nro_con)");
         
-        insertarDato("Inversiones","id_inv, mon_inv, tasa_int, mon_rec","'2015','555555','4.4','999999'");
-        insertarDato("Clientes","cod_cli, nom_cli","123, 'juanito'");
-        
-        mostrarPropiedades();
-        //
-        cerrarConexion();
+        crearTabla("TablaFrec",""
+                + "nro_con INT NOT NULL,"
+                + "nro_class INT,"
+                + "L_inf INT,"
+                + "L_sup INT,"
+                + "Marca INT,"
+                + "Obs INT,"
+                + "frec Decimal(6,5),"
+                + "prctj Decimal(6,4),"
+                + "Obs_a INT,"
+                + "frec_a Decimal(6,5),"
+                + "prctj_a Decimal(6,5), "
+                + "Primary KEY (nro_con)");
     }
     
     private void conectar(String url,String user, String pass ) throws Exception{
@@ -55,7 +79,7 @@ public class IOExt extends IOContexto{
 
     private void mostrarPropiedades() {
         java.sql.DatabaseMetaData dm = null;
-        java.sql.ResultSet result = null;
+        ResultSet result = null;
         try {
             if (conn != null) {
                 dm = conn.getMetaData();
@@ -87,7 +111,7 @@ public class IOExt extends IOContexto{
         dm = null;
     }
 
-    private void cerrarConexion() {
+    public void cerrar() {
         try {
             if (conn != null) {
                 conn.close();
@@ -97,34 +121,24 @@ public class IOExt extends IOContexto{
         }
     }
     
-    private void crearDB(String nombre){
+    private void UsarDB(String nombre){
         try{
         Statement st=conn.createStatement();
-            try{
-                st.executeUpdate("DROP DATABASE "+nombre);
-            }catch(SQLException e){
-                //System.out.println("La BD no Existe");
-            }
-            st.executeUpdate("CREATE DATABASE "+ nombre);
-            st.executeUpdate("USE "+nombre);
-            //st.executeUpdate("CREATE TABLE tabla (id INT NOT NULL AUTO_INCREMENT, nombre Text, Primary KEY (id));");
+        st.executeUpdate("USE "+nombre);
         }catch(Exception e){
-            System.out.println("ERROR en Crear");}
-        
+        Statement st;  
+            try {
+                st = conn.createStatement();
+                st.executeUpdate("CREATE DATABASE "+nombre+";");
+            } catch (SQLException ex) {}
+        }
     }
     
     private void crearTabla(String nombre,String Att){
         try{
         Statement st=conn.createStatement();
-            try{
-                st.executeUpdate("DROP TABLE "+nombre);
-            }catch(SQLException e){
-                //System.out.println("La BD no Existe");
-            }
-            st.executeUpdate("CREATE TABLE "+nombre+" ("+Att+");");
-        }catch(Exception e){
-            System.out.println("ERROR en Crear");}
-        
+        st.executeUpdate("CREATE TABLE "+nombre+" ("+Att+");");
+        }catch(Exception e){} 
     }
     
     private void insertarDato(String table, String Atts,String dats){
@@ -132,15 +146,49 @@ public class IOExt extends IOContexto{
             Statement insertar=conn.createStatement();
             insertar.executeUpdate("INSERT INTO "+table+" ("+Atts+") VALUES("+dats+")");
         }catch(Exception e){
-            System.out.println("error Insertar: TABLA: "+table+", objeto: "+dats);}
+            //System.out.println("error Insertar: TABLA: "+table+", objeto: "+dats);
+        }
        
     }
     
     @Override
     public Lista Lectura() throws IOException, NoDato, NumberFormatException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ResultSet result = null;
+        try {
+            Statement select = conn.createStatement();
+            result = select.executeQuery("SELECT * FROM inversiones INNER JOIN clientes ON inversiones.cod_cli = clientes.cod_cli");
+            while (result.next()) {
+                List<String> datosfila=migrarDato(result);
+                agregarDato(datosfila);
+            }
+            result.close();
+        }catch(Exception e){}
+        
+        return inversiones;
+     }
+    
+    private List<String> migrarDato(ResultSet r){
+        List<String> datosfila=new ArrayList();
+        int i=1;
+        try{
+            while (r.getString(i) != null) {
+                datosfila.add(r.getString(i));
+                i++;
+            }
+        }catch(Exception e){
+            return datosfila;
+        }
+        return datosfila;
     }
-
+    
+    private void agregarDato(List<String> df) {
+        Cliente c = new Cliente(df.get(9), df.get(10));
+        if (!clientes.contains(c)) {
+            clientes.add(c);
+        }
+        inversiones.add(new Inversion(clientes.indexOf(c), (int) Double.parseDouble(df.get(0)), df.get(2), (int) Double.parseDouble(df.get(3)), Double.parseDouble(df.get(4)), df.get(6), df.get(7), df.get(8)));
+    }
+     
     @Override
     public void Escritura(String[][] p, String tipo) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

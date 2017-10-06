@@ -15,11 +15,7 @@ import tipoInv.GestorDatos;
 public class ProyectoBanco {
 
     public static void main(String[] args) throws IOException, NoDato, InterruptedException, Exception {
-        
-        
-        
-        IOContexto conn=new IOExt("Banco","","root","");
-        
+                
         //Cambios
         
         
@@ -38,8 +34,14 @@ public class ProyectoBanco {
 
         x.setVisible(false);//Ocultamos el menú
         //Se solicita el filtro de datos según los parámetros ingresados
+        
+        
         GestorDatos legacy = new TipoInversion("DatosSistemaLegacy.xlsx", x.getFechaInicio(), x.getFechaFin(), x.getTipo());
-        //Se genera el informe con la tabla de frecuencias
+        
+        //GestorDatos legacy = new TipoInversion("Banco","","root","", x.getFechaInicio(), x.getFechaFin(), x.getTipo());
+
+
+//Se genera el informe con la tabla de frecuencias
         legacy = new TablaHistograma(legacy);
         String[][] p = legacy.informe();
         //Se genera el informe con las medidas de tendencia central
@@ -48,7 +50,7 @@ public class ProyectoBanco {
         //Escribimos el informe en el archivo de salida (Excel)
         legacy.getArchivo().Escritura(p,"Tabla de frecuencias_"+x.getTipo());
         legacy.getArchivo().Escritura(q);
-        System.out.println(legacy.getArchivo().toString());
+        //System.out.println(legacy.getArchivo().toString());
         //Se finaliza la aplicación (menú)
         x.cambiarEstado();
         

@@ -23,8 +23,7 @@ public class TablaHistograma extends Calculos {
         String[][] histograma = super.getHistograma();
         int k = super.getK();
         int[] largos = new int[9];
-        String esp = "                                        ";
-
+        
         tabla[0][0] = "N° clase";
         largos[0] = tabla[0][0].length();
         tabla[0][1] = "Límites intervalos";
@@ -75,9 +74,30 @@ public class TablaHistograma extends Calculos {
             tabla[c + 1][7] = truncar(count / n.size()) + "";
             tabla[c + 1][8] = truncar(count / n.size() * 100) + "";
         }
+        ImprimirPantalla(tabla,largos);
+        return tabla;
+    }
 
+    @Override
+    public ArrayList Filtro() {
+        return super.getgDatos().Filtro();
+    }
+
+    @Override
+    public IOContexto getArchivo() {
+        return super.getgDatos().getArchivo();
+    }
+
+    private String truncar(double d) {
+        DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
+        simbolos.setDecimalSeparator('.');
+        DecimalFormat df = new DecimalFormat("#0.00000", simbolos); //entregaba un string del tipo 0,00000 (la coma no dejaba realizar el parseo al escribir en excel
+        return df.format(d);
+    }
+    
+    private void ImprimirPantalla(String[][] tabla,int[] largos){
+        String esp = "                                        ";
         System.out.println("Tabla de frecuencias:");
-
         for (int i = 0; i < tabla.length; i++) {
             for (int j = 0; j < tabla[0].length; j++) {
                 try {
@@ -95,25 +115,6 @@ public class TablaHistograma extends Calculos {
             System.out.println("");
         }
         System.out.println("");
-        return tabla;
-    }
-
-    @Override
-    public ArrayList Filtro() {
-        return super.getgDatos().Filtro();
-    }
-
-    
-    @Override
-    public IOContexto getArchivo() {
-        return super.getgDatos().getArchivo();
-    }
-
-    public String truncar(double d) {
-        DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
-        simbolos.setDecimalSeparator('.');
-        DecimalFormat df = new DecimalFormat("#0.00000", simbolos); //entregaba un string del tipo 0,00000 (la coma no dejaba realizar el parseo al escribir en excel
-        return df.format(d);
     }
 
 }
