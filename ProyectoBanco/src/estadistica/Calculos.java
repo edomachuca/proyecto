@@ -34,7 +34,7 @@ public abstract class Calculos extends GestorDatos {
             k = 1+ (int)(3.3*Math.log(gDatos.Filtro().size()));
         }
         histograma = new String[k][gDatos.Filtro().size()];
-        tabla = new String[k + 1][9];
+        tabla = new String[k + 1][10];
         lista = gDatos.Filtro();
     }
     

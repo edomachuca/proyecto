@@ -36,7 +36,7 @@ public class Fecha {
         if(fecha==null)
             return null;
         String[] nuevaF=fecha.split("-");
-        if(Integer.parseInt(nuevaF[0])<32){    
+        if(Integer.parseInt(nuevaF[0])<32 && Integer.parseInt(nuevaF[0])>0 ){    
         switch (nuevaF[1]){
             //español
             case "ene": nuevaF[1]=0+"";break;

@@ -47,7 +47,7 @@ public abstract class IOContexto {
     
     public abstract void Escritura(String[][] p,String tipo);
     
-    public abstract void Escritura(String[][] q) ;
+    public abstract void Escritura(String[][] q, String fi, String ff, String tipo);
     
     protected void EscribirLibro(String[][] p,String nombreHoja){
         XSSFSheet hoja = libroOut.createSheet(nombreHoja);
@@ -55,13 +55,13 @@ public abstract class IOContexto {
             XSSFRow fila = hoja.createRow(i);
             for (int j = 0; j < p[0].length; j++) {
                 XSSFCell celda = fila.createCell(j);
-                if (i == 0 || j == 1) {
+                if (i == 0) {
                     celda.setCellValue(p[i][j]);
                 }
-                if (i != 0 && (j == 0 || j == 2 || j == 3 || j == 6)) {
+                if (i != 0 && (j == 0 || j == 1 || j == 2 || j == 3 || j==4 || j == 7)) {
                     celda.setCellValue(Integer.parseInt(p[i][j].trim()));
                 }
-                if (i != 0 && (j == 4 || j == 5 || j == 7 || j == 8)) {
+                if (i != 0 && (j == 5 || j == 6 || j == 8 || j == 9)) {
                     celda.setCellValue(Double.parseDouble(p[i][j].trim()));
                 }
                 hoja.autoSizeColumn(j);
@@ -86,7 +86,6 @@ public abstract class IOContexto {
         crearLibro(libroOut);
 
     }
-    
     private void crearLibro(XSSFWorkbook libroEntrada){
          
         java.util.Date fecha = new Date();

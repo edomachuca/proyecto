@@ -89,7 +89,7 @@ public class IOLocal extends IOContexto {
     }
     
     @Override
-    public void Escritura(String[][] q) {
+    public void Escritura(String[][] q, String fi, String ff, String tipo) {
         EscribirLibro(q);
     }
     

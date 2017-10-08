@@ -22,26 +22,28 @@ public class TablaHistograma extends Calculos {
         String[][] tabla = super.getTabla();
         String[][] histograma = super.getHistograma();
         int k = super.getK();
-        int[] largos = new int[9];
+        int[] largos = new int[10];
         
         tabla[0][0] = "N° clase";
         largos[0] = tabla[0][0].length();
-        tabla[0][1] = "Límites intervalos";
+        tabla[0][1] = "Límite inferior";
         largos[1] = tabla[0][1].length();
-        tabla[0][2] = "Marca de clase";
+        tabla[0][2] = "Límite superior";
         largos[2] = tabla[0][2].length();
-        tabla[0][3] = "N° observaciones";
+        tabla[0][3] = "Marca de clase";
         largos[3] = tabla[0][3].length();
-        tabla[0][4] = "Frecuencia relativa";
+        tabla[0][4] = "N° observaciones";
         largos[4] = tabla[0][4].length();
-        tabla[0][5] = "Porcentaje relativo";
+        tabla[0][5] = "Frecuencia relativa";
         largos[5] = tabla[0][5].length();
-        tabla[0][6] = "N° Obs. acumuladas";
+        tabla[0][6] = "Porcentaje relativo";
         largos[6] = tabla[0][6].length();
-        tabla[0][7] = "Frec. relativa acumulada";
+        tabla[0][7] = "N° Obs. acumuladas";
         largos[7] = tabla[0][7].length();
-        tabla[0][8] = "Porc. relativo acumulado";
+        tabla[0][8] = "Frec. relativa acumulada";
         largos[8] = tabla[0][8].length();
+        tabla[0][9] = "Porc. relativo acumulado";
+        largos[9] = tabla[0][9].length();
 
         int mayor = Get(n, n.size() - 1);
         int menor = Get(n, 0);
@@ -57,8 +59,9 @@ public class TablaHistograma extends Calculos {
                 may += k;
             }
             tabla[c + 1][0] = c + 1 + "";
-            tabla[c + 1][1] = "[" + (int) men + "-" + (int) may + "[ ";
-            tabla[c + 1][2] = (int) (men + may) / 2 + "";
+            tabla[c + 1][1] = (int) men +""; 
+            tabla[c + 1][2] = (int) may + "";
+            tabla[c + 1][3] = (int) (men + may) / 2 + "";
             for (int i = (int) count; i < n.size() && seguir; i++) {
                 if (men <= Get(n, i) && Get(n, i) < may) {
                     parcial++;
@@ -67,12 +70,12 @@ public class TablaHistograma extends Calculos {
                     seguir = false;
                 }
             }
-            tabla[c + 1][3] = (int) parcial + "";
-            tabla[c + 1][4] = truncar(parcial / n.size()) + "";
-            tabla[c + 1][5] = truncar(parcial / n.size() * 100) + "";
-            tabla[c + 1][6] = (int) count + "";
-            tabla[c + 1][7] = truncar(count / n.size()) + "";
-            tabla[c + 1][8] = truncar(count / n.size() * 100) + "";
+            tabla[c + 1][4] = (int) parcial + "";
+            tabla[c + 1][5] = truncar(parcial / n.size()) + "";
+            tabla[c + 1][6] = truncar(parcial / n.size() * 100) + "";
+            tabla[c + 1][7] = (int) count + "";
+            tabla[c + 1][8] = truncar(count / n.size()) + "";
+            tabla[c + 1][9] = truncar(count / n.size() * 100) + "";
         }
         if(mostrar)
             ImprimirPorPantalla(tabla,largos);

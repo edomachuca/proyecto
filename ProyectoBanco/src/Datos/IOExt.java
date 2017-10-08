@@ -11,7 +11,6 @@ package Datos;
 import java.io.IOException;
 import listas.Lista;
 import listas.NoDato;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -23,6 +22,7 @@ import listas.Cliente;
 import listas.Inversion;
 
 
+
 /**
  *
  * @author Mazhuka
@@ -30,6 +30,10 @@ import listas.Inversion;
 public class IOExt extends IOContexto{
     private Connection conn;
     private final String driver="com.mysql.jdbc.Driver";
+    private final String Est="Estadisticas";
+    private final String TabF="TablaFrec";
+    private int nro_con;
+    
     
     public IOExt(String nombre,String dbName,String user, String pass) throws Exception{
         super(nombre);
@@ -37,7 +41,7 @@ public class IOExt extends IOContexto{
         conectar(path+dbName,user,pass);
         //INSERTAR CODIGO AQUI
         UsarDB(nombre);
-        crearTabla("Estadisticas",""
+        crearTabla(Est,""
                 + " nro_con INT NOT NULL AUTO_INCREMENT,"
                 + " Esperanza INT,"
                 + " Varianza DOUBLE,"
@@ -47,11 +51,11 @@ public class IOExt extends IOContexto{
                 + " Coef_var DOUBLE,"
                 + " Media_T DOUBLE,"
                 + " Tipo_f varchar(3) NOT NULL,"
-                + " Fecha_i varchar(10) NOT NULL,"
-                + " fecha_f varchar(10) NOT NULL,"
+                + " Fecha_i varchar(11) NOT NULL,"
+                + " fecha_f varchar(11) NOT NULL,"
                 + " Primary KEY (nro_con)");
         
-        crearTabla("TablaFrec",""
+        crearTabla(TabF,""
                 + "nro_con INT NOT NULL,"
                 + "nro_class INT,"
                 + "L_inf INT,"
@@ -59,11 +63,13 @@ public class IOExt extends IOContexto{
                 + "Marca INT,"
                 + "Obs INT,"
                 + "frec Decimal(6,5),"
-                + "prctj Decimal(6,4),"
+                + "prctj Decimal(6,3),"
                 + "Obs_a INT,"
                 + "frec_a Decimal(6,5),"
-                + "prctj_a Decimal(6,5), "
-                + "Primary KEY (nro_con)");
+                + "prctj_a Decimal(6,3), "
+                + "Primary KEY (nro_con,nro_class)");
+        
+        setNroConsulta();
     }
     
     private void conectar(String url,String user, String pass ) throws Exception{
@@ -75,40 +81,6 @@ public class IOExt extends IOContexto{
         }catch(SQLException e){
                 System.out.println("Error en la Conexión");
     }
-    }
-
-    private void mostrarPropiedades() {
-        java.sql.DatabaseMetaData dm = null;
-        ResultSet result = null;
-        try {
-            if (conn != null) {
-                dm = conn.getMetaData();
-                
-                System.out.println("Driver Information");
-                System.out.println("\tDriver Name: " + dm.getDriverName());
-                System.out
-                        .println("\tDriver Version: " + dm.getDriverVersion());
-                System.out.println("\nDatabase Information ");
-                System.out.println("\tDatabase Name: " + dm.getDatabaseProductName());
-                System.out.println("\tDatabase Version: " + dm.getDatabaseProductVersion());
-                System.out.println("\tNombre DB: "+dm.getDatabaseProductName());
-                Statement select = conn.createStatement();
-                result = select.executeQuery("SELECT * FROM Clientes");
-
-                while (result.next()) {
-                    System.out.println("id: " + result.getString(1) + "\n");
-                    System.out.println("Nombre: " + result.getString(2) + "\n");
-                    
-                }
-                result.close();
-                result = null;
-            } else {
-                System.out.println("Error: No active Connection");
-            }
-        } catch (SQLException e) {
-            System.out.println("Error dentro del proceso de Propiedades");
-        }
-        dm = null;
     }
 
     public void cerrar() {
@@ -141,35 +113,33 @@ public class IOExt extends IOContexto{
         }catch(Exception e){} 
     }
     
-
-    
     @Override
     public Lista Lectura() throws IOException, NoDato, NumberFormatException {
         ResultSet result;
         try {
             Statement select = conn.createStatement();
             result = select.executeQuery("SELECT * FROM inversiones INNER JOIN clientes ON inversiones.cod_cli = clientes.cod_cli");
-            while (result.next()) {
+              while (result.next()) {
                 List<String> datosfila=migrarDato(result);
                 agregarDato(datosfila);
             }
             result.close();
         }catch(Exception e){}
-        
         return inversiones;
      }
     
     private List<String> migrarDato(ResultSet r){
         List<String> datosfila=new ArrayList();
-        int i=1;
         try{
-            while (r.getString(i) != null) {
-                datosfila.add(r.getString(i));
-                i++;
+            int largo=r.getMetaData().getColumnCount()+1;
+            for(int i=1;i<largo;i++) {
+                try{
+                datosfila.add(r.getString(i));              
+                }catch(Exception e){
+                datosfila.add(null); 
+                }
             }
-        }catch(Exception e){
-            return datosfila;
-        }
+        }catch(Exception e){}
         return datosfila;
     }
     
@@ -182,25 +152,59 @@ public class IOExt extends IOContexto{
     }
      
     private void insertarDato(String table, String Atts, String dats) {
-    try {
-        Statement insertar = conn.createStatement();
-        insertar.executeUpdate("INSERT INTO " + table + " (" + Atts + ") VALUES(" + dats + ")");
-    } catch (Exception e) {
-        //System.out.println("error Insertar: TABLA: "+table+", objeto: "+dats);
-    }
-
+        try {
+            Statement insertar = conn.createStatement();
+            insertar.executeUpdate("INSERT INTO " + table + " (" + Atts + ") VALUES(" + dats + ")");
+            
+            //System.out.println("INSERT INTO " + table + " (" + Atts + ") VALUES(" + dats + ")");
+        } catch (Exception e) {
+            //System.out.println("error INSERT INTO " + table + " (" + Atts + ") VALUES(" + dats + ")");
+        }
     }
     
+    //Este método escribe en tabla
     @Override
-    public void Escritura(String[][] p, String tipo) {
+    public void Escritura(String[][] p, String nombreHoja) {
+        EscribirLibro(p,nombreHoja);
+        String Atts="nro_con,nro_class,L_inf,L_sup,Marca,Obs,frec,prctj,Obs_a,frec_a,prctj_a";
+        for(int i=1;i<p.length;i++){
+            String dats="'"+nro_con+"'";
+            for(int j=0;j<p[0].length;j++){
+                dats+=", '"+p[i][j].trim()+"'";
+            }
+            insertarDato(TabF,Atts,dats);
+        }
+
+    }
+
+    //Este método escribe en estadisticas
+    @Override
+    public void Escritura(String[][] q, String fi, String ff, String tipo) {
+        EscribirLibro(q);
+        String Atts="Esperanza,Varianza ,Mediana , Moda , Des_stand , Coef_var , Media_T , Tipo_f , Fecha_i, fecha_f ";
+        for(int i=1;i<q[0].length;i++){
+            String dats="";
+            for(int j=0;j<q.length;j++){
+                dats+="'"+q[j][i].trim()+"',";
+            }
+            dats+="'"+tipo+"','"+fi+"','"+ff+"'";
+            insertarDato(Est,Atts,dats);
+        }
         
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        cerrar();
     }
 
-    @Override
-    public void Escritura(String[][] q) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void setNroConsulta(){
+        ResultSet result;
+        try{
+            Statement select = conn.createStatement();
+            result = select.executeQuery("SELECT * FROM "+Est+" WHERE nro_con=(SELECT max(nro_con) FROM "+Est+" )");
+            nro_con=1;
+            if(result.next()){
+                nro_con=result.getInt(1)+1;
+            }
+        }catch(Exception e){
+        }
     }
-
     
 }
