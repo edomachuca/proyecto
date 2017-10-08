@@ -36,7 +36,7 @@ public class Fecha {
         if(fecha==null)
             return null;
         String[] nuevaF=fecha.split("-");
-        if(nuevaF.length>1){    
+        if(Integer.parseInt(nuevaF[0])<32){    
         switch (nuevaF[1]){
             //español
             case "ene": nuevaF[1]=0+"";break;
@@ -71,11 +71,7 @@ public class Fecha {
         Date nfecha=new Date(Integer.parseInt(nuevaF[2])-1900,Integer.parseInt(nuevaF[1]),Integer.parseInt(nuevaF[0]));
         return nfecha;
         }
-        long multi=24*60*60*1000;
-        long fechaL=Long.parseLong(fecha);
-        Date nfecha=new Date((fechaL-25568)*multi);
-        return nfecha;
-        
-        
+        Date nfecha=new Date(Integer.parseInt(nuevaF[0])-1900,Integer.parseInt(nuevaF[1])-1,Integer.parseInt(nuevaF[2]));
+        return nfecha;  
     }   
  } 

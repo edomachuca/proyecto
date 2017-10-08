@@ -141,19 +141,11 @@ public class IOExt extends IOContexto{
         }catch(Exception e){} 
     }
     
-    private void insertarDato(String table, String Atts,String dats){
-        try{
-            Statement insertar=conn.createStatement();
-            insertar.executeUpdate("INSERT INTO "+table+" ("+Atts+") VALUES("+dats+")");
-        }catch(Exception e){
-            //System.out.println("error Insertar: TABLA: "+table+", objeto: "+dats);
-        }
-       
-    }
+
     
     @Override
     public Lista Lectura() throws IOException, NoDato, NumberFormatException {
-        ResultSet result = null;
+        ResultSet result;
         try {
             Statement select = conn.createStatement();
             result = select.executeQuery("SELECT * FROM inversiones INNER JOIN clientes ON inversiones.cod_cli = clientes.cod_cli");
@@ -189,8 +181,19 @@ public class IOExt extends IOContexto{
         inversiones.add(new Inversion(clientes.indexOf(c), (int) Double.parseDouble(df.get(0)), df.get(2), (int) Double.parseDouble(df.get(3)), Double.parseDouble(df.get(4)), df.get(6), df.get(7), df.get(8)));
     }
      
+    private void insertarDato(String table, String Atts, String dats) {
+    try {
+        Statement insertar = conn.createStatement();
+        insertar.executeUpdate("INSERT INTO " + table + " (" + Atts + ") VALUES(" + dats + ")");
+    } catch (Exception e) {
+        //System.out.println("error Insertar: TABLA: "+table+", objeto: "+dats);
+    }
+
+    }
+    
     @Override
     public void Escritura(String[][] p, String tipo) {
+        
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

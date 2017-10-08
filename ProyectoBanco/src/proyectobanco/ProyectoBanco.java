@@ -4,7 +4,7 @@ package proyectobanco;
  *
  * @author BSOD
  */
-import Datos.*;
+
 import estadistica.*;
 import listas.NoDato;
 import java.io.*;
@@ -36,17 +36,17 @@ public class ProyectoBanco {
         //Se solicita el filtro de datos según los parámetros ingresados
         
         
-        //GestorDatos legacy = new TipoInversion("DatosSistemaLegacy.xlsx", x.getFechaInicio(), x.getFechaFin(), x.getTipo());
+        GestorDatos legacy = new TipoInversion("DatosSistemaLegacy.xlsx", x.getFechaInicio(), x.getFechaFin(), x.getTipo());
         
-        GestorDatos legacy = new TipoInversion("Banco","","root","", x.getFechaInicio(), x.getFechaFin(), x.getTipo());
+        //GestorDatos legacy = new TipoInversion("Banco_peoplebank","","root","", x.getFechaInicio(), x.getFechaFin(), x.getTipo());
 
 
 //Se genera el informe con la tabla de frecuencias
         legacy = new TablaHistograma(legacy);
-        String[][] p = legacy.informe();
+        String[][] p = legacy.informe(true);
         //Se genera el informe con las medidas de tendencia central
         legacy = new TendenciaCentral(legacy);
-        String[][] q = legacy.informe();
+        String[][] q = legacy.informe(true);
         //Escribimos el informe en el archivo de salida (Excel)
         legacy.getArchivo().Escritura(p,"Tabla de frecuencias_"+x.getTipo());
         legacy.getArchivo().Escritura(q);

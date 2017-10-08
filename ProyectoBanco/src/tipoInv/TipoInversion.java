@@ -39,6 +39,7 @@ public class TipoInversion extends GestorDatos {
             System.out.println("El archivo no existe.");
         }
     }
+    
     public TipoInversion(String nombre,String dbName,String user, String pass, String i, String f, String t) throws IOException, NoDato, Exception {
         try {
             archivo = new IOExt(nombre,dbName,user,pass);
@@ -58,7 +59,7 @@ public class TipoInversion extends GestorDatos {
     }
 
     @Override
-    public String[][] informe() {
+    public String[][] informe(boolean mostrar) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

@@ -27,11 +27,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public class IOLocal extends IOContexto {
     
-    private XSSFWorkbook libroOut;
+   
     
     public IOLocal(String nombre) throws NoDato, IOException {
         super(nombre);
-        libroOut = new XSSFWorkbook();
+
     }
 
     @Override
@@ -85,55 +85,13 @@ public class IOLocal extends IOContexto {
 
     @Override
     public void Escritura(String[][] p,String nombreHoja) {
-        XSSFSheet hoja = libroOut.createSheet(nombreHoja);
-        for (int i = 0; i < p.length; i++) {
-            XSSFRow fila = hoja.createRow(i);
-            for (int j = 0; j < p[0].length; j++) {
-                XSSFCell celda = fila.createCell(j);
-                if (i == 0 || j == 1) {
-                    celda.setCellValue(p[i][j]);
-                }
-                if (i != 0 && (j == 0 || j == 2 || j == 3 || j == 6)) {
-                    celda.setCellValue(Integer.parseInt(p[i][j].trim()));
-                }
-                if (i != 0 && (j == 4 || j == 5 || j == 7 || j == 8)) {
-                    celda.setCellValue(Double.parseDouble(p[i][j].trim()));
-                }
-                hoja.autoSizeColumn(j);
-            }
-        }
+        EscribirLibro(p,nombreHoja);
     }
     
     @Override
     public void Escritura(String[][] q) {
-        XSSFSheet hoja1 = libroOut.createSheet("Medidas de tendencia central");
-        for (int i = 0; i < q.length; i++) {
-            XSSFRow fila = hoja1.createRow(i);
-            for (int j = 0; j < q[0].length; j++) {
-                XSSFCell celda = fila.createCell(j);
-                if (j == 0) {
-                    celda.setCellValue(q[i][j]);
-                }
-                if (j == 1) {
-                    celda.setCellValue(Double.parseDouble(q[i][j].trim()));
-                }
-                hoja1.autoSizeColumn(j);//formato
-            }
-        }
-        crearLibro(libroOut);
+        EscribirLibro(q);
     }
     
-    private void crearLibro(XSSFWorkbook libroEntrada){
-         
-        java.util.Date fecha = new Date();
-        String[] fechaV = fecha.toString().split(" ");
-        String[] fechaVH = fechaV[3].split(":");
-        String nfecha = fechaV[2] + "_" + fechaV[1] + "_" + fechaV[5] + "_" + fechaVH[0] + "_" + fechaVH[1] + "_" + fechaVH[2];
-        try {
-            FileOutputStream elFichero = new FileOutputStream("Informe_Estadístico_" + nfecha + ".xlsx");
-            libroEntrada.write(elFichero);
-            elFichero.close();
-        } catch (Exception e) {
-        }
-    }
+    
 }

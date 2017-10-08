@@ -15,7 +15,7 @@ public class TendenciaCentral extends Calculos {
     }
 
     @Override
-    public String[][] informe() {
+    public String[][] informe(boolean mostrar) {
         String[][] d = super.getDatos();
 
         d[0][0] = "Esperanza: \t\t\t";
@@ -35,7 +35,14 @@ public class TendenciaCentral extends Calculos {
         d[6][0] = "Media truncada: \t\t";
         super.MediaT();
         
-        System.out.println("Medidas de tendencia central:");
+        if(mostrar)
+            ImprimirPorPantalla(d);
+
+        return d;
+    }
+
+    public void ImprimirPorPantalla(String[][] d){
+                System.out.println("Medidas de tendencia central:");
 
         for (int i = 0; i < d.length; i++) {
             for (int j = 0; j < d[0].length; j++) {
@@ -44,16 +51,15 @@ public class TendenciaCentral extends Calculos {
                 } catch (NullPointerException e) {
                     System.out.print("No Dato");
                 } finally {
-                    System.out.print("|");
+                    if(j==0)
+                        System.out.print("|");
                 }
             }
             System.out.println("");
         }
         System.out.println("");
 
-        return d;
     }
-
     @Override
     public ArrayList Filtro() {
         return super.getgDatos().Filtro();

@@ -17,7 +17,7 @@ public class TablaHistograma extends Calculos {
     }
 
     @Override
-    public String[][] informe() {
+    public String[][] informe(boolean mostrar) {
         ArrayList n = Filtro();
         String[][] tabla = super.getTabla();
         String[][] histograma = super.getHistograma();
@@ -74,7 +74,8 @@ public class TablaHistograma extends Calculos {
             tabla[c + 1][7] = truncar(count / n.size()) + "";
             tabla[c + 1][8] = truncar(count / n.size() * 100) + "";
         }
-        ImprimirPantalla(tabla,largos);
+        if(mostrar)
+            ImprimirPorPantalla(tabla,largos);
         return tabla;
     }
 
@@ -95,7 +96,7 @@ public class TablaHistograma extends Calculos {
         return df.format(d);
     }
     
-    private void ImprimirPantalla(String[][] tabla,int[] largos){
+    private void ImprimirPorPantalla(String[][] tabla,int[] largos){
         String esp = "                                        ";
         System.out.println("Tabla de frecuencias:");
         for (int i = 0; i < tabla.length; i++) {
