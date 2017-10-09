@@ -13,6 +13,7 @@ import listas.Inversion;
 import listas.Lista;
 import Datos.IOContexto;
 import Datos.IOLocal;
+import java.util.Iterator;
 
 /**
  *
@@ -22,18 +23,20 @@ public class TipoInversion extends GestorDatos {
 
     private Lista datos;
     private ArrayList filtro;
-    private String ini, fin;
+    private Date i,f;
     private String tip;
     private IOContexto archivo;
+    private Inversion def;
 
-    public TipoInversion(String arch, String i, String f, String t) throws IOException, NoDato {
+    public TipoInversion(String arch, String ini, String fin, String t) throws IOException, NoDato {
         try {
             archivo = new IOLocal(arch);
             datos = archivo.Lectura();
-            ini = i;
-            fin = f;
+            i = ConvertirFecha(ini);
+            f = ConvertirFecha(fin);
             tip = t;
             filtro = setFiltro();
+            def = getDefault();
         } catch (NullPointerException e) {
             System.out.println("El archivo no existe.");
         }
@@ -55,45 +58,33 @@ public class TipoInversion extends GestorDatos {
     }
     
     private ArrayList setFiltro() {
-        Date i = ConvertirFecha(ini);
-        Date f = ConvertirFecha(fin);
-        ArrayList entrega = new ArrayList();
+        ArrayList x = FiltroFecha(datos, i, f);
         ArrayList[] filtroTipo = new ArrayList[4];
         filtroTipo[0] = new ArrayList();
         filtroTipo[1] = new ArrayList();
         filtroTipo[2] = new ArrayList();
         filtroTipo[3] = new ArrayList();
-
-        datos.setFirst();
-        while (!datos.eol()) {
-            if (((Inversion) datos.currValue()).getFechas().getInicio().compareTo(i)>=0 && ((Inversion) datos.currValue()).getFechas().getInicio().compareTo(f)<=0) {
-                if (tip.equals("GR")) {
-                    entrega.add(datos.currValue());
-                } else {
-                    switch (((Inversion) datos.currValue()).getTipo()) {
+        
+        Iterator iterador = x.listIterator(); 
+        while( iterador.hasNext() ) {
+            switch (((Inversion) iterador.next()).getTipo()) {
                         case "DF":
-                            filtroTipo[0].add(datos.currValue());
+                            filtroTipo[0].add(iterador.next());
                             break;
                         case "FM":
-                            filtroTipo[1].add(datos.currValue());
+                            filtroTipo[1].add(iterador.next());
                             break;
                         case "FI":
-                            filtroTipo[2].add(datos.currValue());
+                            filtroTipo[2].add(iterador.next());
                             break;
                         case "BO":
-                            filtroTipo[3].add(datos.currValue());
+                            filtroTipo[3].add(iterador.next());
                             break;
                         default:
                             throw new AssertionError();
-                    }
-                }
-
             }
-            datos.next();
-        }
-        Inversion def=new Inversion(0, 0, "GR", 0, 0, "00-ene-0000","00-ene-0000", "00-ene-0000");
-        if (entrega.isEmpty() ) 
-            entrega.add(def);
+        } 
+        
         if(filtroTipo[0].isEmpty())
             filtroTipo[0].add(def);
         if(filtroTipo[1].isEmpty())
@@ -103,26 +94,21 @@ public class TipoInversion extends GestorDatos {
         if(filtroTipo[3].isEmpty())
             filtroTipo[3].add(def);
         
-        if (tip.equals("GR")) {
-            quickSort(entrega, 0, entrega.size() - 1);
-            return entrega;
-        } else {
-            switch (tip) {
-                case "DF":
-                    quickSort(filtroTipo[0], 0, filtroTipo[0].size() - 1);
-                    return filtroTipo[0];
-                case "FM":
-                    quickSort(filtroTipo[1], 0, filtroTipo[1].size() - 1);
-                    return filtroTipo[1];
-                case "FI":
-                    quickSort(filtroTipo[2], 0, filtroTipo[2].size() - 1);
-                    return filtroTipo[2];
-                case "BO":
-                    quickSort(filtroTipo[3], 0, filtroTipo[3].size() - 1);
-                    return filtroTipo[3];
-                default:
-                    throw new AssertionError();
-            }
+        switch (tip) {
+            case "DF":
+                quickSort(filtroTipo[0], 0, filtroTipo[0].size() - 1);
+                return filtroTipo[0];
+            case "FM":
+                quickSort(filtroTipo[1], 0, filtroTipo[1].size() - 1);
+                return filtroTipo[1];
+            case "FI":
+                quickSort(filtroTipo[2], 0, filtroTipo[2].size() - 1);
+                return filtroTipo[2];
+            case "BO":
+                quickSort(filtroTipo[3], 0, filtroTipo[3].size() - 1);
+                return filtroTipo[3];
+            default:
+                throw new AssertionError();
         }
     }
 

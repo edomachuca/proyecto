@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="ProyectoBanco">
+  <ClassDiagramComponents>
+    <Class name="IOContexto" package="Datos" visibility="public" isAbstract="true" xPosition="425.0" yPosition="483.0">
+      <Fields>
+        <Field name="nomArchivo" type="String" visibility="protected"/>
+        <Field name="clientes" type="List" visibility="protected"/>
+        <Field name="inversiones" type="Lista" visibility="protected"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="nombre"/>
+        </Constructor>
+        <Constructor visibility="public">
+          <Argument type="String" name="nombre"/>
+          <Argument type="String" name="dbname"/>
+          <Argument type="String" name="user"/>
+          <Argument type="String" name="pass"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="Lectura" returnType="Lista" visibility="public" isAbstract="true"/>
+        <Method name="Escritura" returnType="void" visibility="public" isAbstract="true">
+          <Argument type="String[][]" name="p"/>
+          <Argument type="String" name="tipo"/>
+        </Method>
+        <Method name="Escritura" returnType="void" visibility="public" isAbstract="true">
+          <Argument type="String[][]" name="q"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="IOExt" package="Datos" visibility="public" xPosition="66.0" yPosition="483.0">
+      <Fields>
+        <Field name="conn" type="Connection" visibility="private"/>
+        <Field name="driver" type="String" visibility="private" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="nombre"/>
+          <Argument type="String" name="dbName"/>
+          <Argument type="String" name="user"/>
+          <Argument type="String" name="pass"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="conectar" returnType="void" visibility="private">
+          <Argument type="String" name="url"/>
+          <Argument type="String" name="user"/>
+          <Argument type="String" name="pass"/>
+        </Method>
+        <Method name="mostrarPropiedades" returnType="void" visibility="private"/>
+        <Method name="cerrarConexion" returnType="void" visibility="private"/>
+        <Method name="crearTabla" returnType="void" visibility="private">
+          <Argument type="String" name="nombre"/>
+        </Method>
+        <Method name="insertarDato" returnType="void" visibility="private">
+          <Argument type="String" name="table"/>
+          <Argument type="String" name="nom"/>
+        </Method>
+        <Method name="Lectura" returnType="Lista" visibility="public"/>
+        <Method name="Escritura" returnType="void" visibility="public">
+          <Argument type="String[][]" name="p"/>
+          <Argument type="String" name="tipo"/>
+        </Method>
+        <Method name="Escritura" returnType="void" visibility="public">
+          <Argument type="String[][]" name="q"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="IOLocal" package="Datos" visibility="public" xPosition="66.0" yPosition="763.0">
+      <Fields>
+        <Field name="libroOut" type="XSSFWorkbook" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="nombre"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="Lectura" returnType="Lista" visibility="public"/>
+        <Method name="agregarDato" returnType="void" visibility="private">
+          <Argument type="List&lt;String&gt;" name="df"/>
+        </Method>
+        <Method name="agregarCelda" returnType="String" visibility="private">
+          <Argument type="XSSFCell" name="cell"/>
+        </Method>
+        <Method name="Escritura" returnType="void" visibility="public">
+          <Argument type="String[][]" name="p"/>
+          <Argument type="String" name="nombreHoja"/>
+        </Method>
+        <Method name="Escritura" returnType="void" visibility="public">
+          <Argument type="String[][]" name="q"/>
+        </Method>
+        <Method name="crearLibro" returnType="void" visibility="private">
+          <Argument type="XSSFWorkbook" name="libroEntrada"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Calculos" package="estadistica" visibility="public" isAbstract="true" xPosition="425.0" yPosition="10.0">
+      <Fields>
+        <Field name="gDatos" type="GestorDatos" visibility="private"/>
+        <Field name="Varianza" type="double" visibility="private"/>
+        <Field name="Esperanza" type="double" visibility="private"/>
+        <Field name="Mediana" type="double" visibility="private"/>
+        <Field name="Moda" type="double" visibility="private"/>
+        <Field name="desviacion" type="double" visibility="private"/>
+        <Field name="coefVar" type="double" visibility="private"/>
+        <Field name="MediaT" type="double" visibility="private"/>
+        <Field name="k" type="int" visibility="private" isFinal="true"/>
+        <Field name="histograma" type="String[][]" visibility="private"/>
+        <Field name="datos" type="String[][]" visibility="private"/>
+        <Field name="tabla" type="String[][]" visibility="private"/>
+        <Field name="lista" type="ArrayList" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="GestorDatos" name="g"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="Esperanza" returnType="void" visibility="protected"/>
+        <Method name="Moda" returnType="void" visibility="protected"/>
+        <Method name="MediaT" returnType="void" visibility="protected"/>
+        <Method name="Mediana" returnType="void" visibility="protected"/>
+        <Method name="Varianza" returnType="double" visibility="protected"/>
+        <Method name="getgDatos" returnType="GestorDatos" visibility="protected"/>
+        <Method name="getK" returnType="int" visibility="protected"/>
+        <Method name="getHistograma" returnType="String[][]" visibility="protected"/>
+        <Method name="getDatos" returnType="String[][]" visibility="protected"/>
+        <Method name="getTabla" returnType="String[][]" visibility="protected"/>
+      </Methods>
+    </Class>
+    <Class name="Extras" package="estadistica" visibility="public" xPosition="1338.0" yPosition="314.0">
+      <Fields/>
+      <Constructors/>
+      <Methods/>
+    </Class>
+    <Class name="TablaHistograma" package="estadistica" visibility="public" xPosition="583.0" yPosition="194.0">
+      <Fields/>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="GestorDatos" name="g"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="informe" returnType="String[][]" visibility="public"/>
+        <Method name="Filtro" returnType="ArrayList" visibility="public"/>
+        <Method name="getArchivo" returnType="IOContexto" visibility="public"/>
+        <Method name="truncar" returnType="String" visibility="public">
+          <Argument type="double" name="d"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="TendenciaCentral" package="estadistica" visibility="public" xPosition="267.0" yPosition="194.0">
+      <Fields/>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="GestorDatos" name="g"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="informe" returnType="String[][]" visibility="public"/>
+        <Method name="Filtro" returnType="ArrayList" visibility="public"/>
+        <Method name="getArchivo" returnType="IOContexto" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Cliente" package="listas" visibility="public" xPosition="1530.0" yPosition="314.0">
+      <Fields>
+        <Field name="cod_cli" type="String" visibility="private" isFinal="true"/>
+        <Field name="nom_cli" type="String" visibility="private" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="cod"/>
+          <Argument type="String" name="nom"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getCod" returnType="String" visibility="public"/>
+        <Method name="getNom" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Inversion" package="listas" visibility="public" xPosition="1338.0" yPosition="10.0">
+      <Fields>
+        <Field name="id_inv" type="int" visibility="private"/>
+        <Field name="tipo_inv" type="String" visibility="private"/>
+        <Field name="mon_inv" type="int" visibility="private"/>
+        <Field name="tasa_int" type="double" visibility="private"/>
+        <Field name="mon_rec" type="double" visibility="private"/>
+        <Field name="fec" type="Fecha" visibility="private"/>
+        <Field name="inv_cerrada" type="boolean" visibility="private"/>
+        <Field name="indexCliente" type="int" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="int" name="index"/>
+          <Argument type="int" name="id"/>
+          <Argument type="String" name="tipo"/>
+          <Argument type="int" name="montoInicial"/>
+          <Argument type="double" name="tasa"/>
+          <Argument type="String" name="fi"/>
+          <Argument type="String" name="ff"/>
+          <Argument type="String" name="fc"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="InversionCerrada" returnType="boolean" visibility="private"/>
+        <Method name="getCierre" returnType="Date" visibility="public"/>
+        <Method name="getMontoI" returnType="int" visibility="public"/>
+        <Method name="getFechas" returnType="Fecha" visibility="public"/>
+        <Method name="getTipo" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Lista" package="listas" visibility="public" xPosition="425.0" yPosition="763.0">
+      <Fields>
+        <Field name="head" type="Nodo&lt;C&gt;" visibility="private"/>
+        <Field name="actual" type="Nodo&lt;C&gt;" visibility="private"/>
+        <Field name="largo" type="int" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="clear" returnType="void" visibility="public"/>
+        <Method name="add" returnType="void" visibility="public">
+          <Argument type="Object" name="item"/>
+        </Method>
+        <Method name="remove" returnType="Object" visibility="public"/>
+        <Method name="setFirst" returnType="void" visibility="public"/>
+        <Method name="next" returnType="void" visibility="public"/>
+        <Method name="length" returnType="int" visibility="public"/>
+        <Method name="setValue" returnType="void" visibility="public">
+          <Argument type="Object" name="obj"/>
+        </Method>
+        <Method name="currValue" returnType="Object" visibility="public"/>
+        <Method name="isEmpty" returnType="boolean" visibility="public"/>
+        <Method name="eol" returnType="boolean" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="NoDato" package="listas" visibility="public" xPosition="1338.0" yPosition="534.0">
+      <Fields/>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods/>
+    </Class>
+    <Class name="Nodo" package="listas" visibility="public" xPosition="1338.0" yPosition="426.0">
+      <Fields>
+        <Field name="dato" type="C" visibility="private"/>
+        <Field name="next" type="Nodo&lt;C&gt;" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="C" name="c"/>
+          <Argument type="Nodo&lt;C&gt;" name="n"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getNext" returnType="Nodo" visibility="public"/>
+        <Method name="getDato" returnType="C" visibility="public"/>
+        <Method name="setNext" returnType="void" visibility="public">
+          <Argument type="Nodo" name="sn"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Fecha" package="proyectobanco" visibility="public" xPosition="1338.0" yPosition="194.0">
+      <Fields>
+        <Field name="fec_inv" type="String" visibility="private"/>
+        <Field name="fec_fin" type="String" visibility="private"/>
+        <Field name="fec_cier" type="String" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="fechaI"/>
+          <Argument type="String" name="fechaF"/>
+          <Argument type="String" name="fechaC"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getCierre" returnType="Date" visibility="public"/>
+        <Method name="getInicio" returnType="Date" visibility="public"/>
+        <Method name="getFinal" returnType="Date" visibility="public"/>
+        <Method name="ConvertirFecha" returnType="Date" visibility="private">
+          <Argument type="String" name="fecha"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Menu" package="proyectobanco" visibility="public" xPosition="1530.0" yPosition="426.0">
+      <Fields>
+        <Field name="fechaInicio" type="String" visibility="private"/>
+        <Field name="fechaFin" type="String" visibility="private"/>
+        <Field name="tipo" type="String" visibility="private"/>
+        <Field name="estado" type="boolean" visibility="private"/>
+        <Field name="bonos" type="javax.swing.JRadioButton" visibility="private"/>
+        <Field name="bsod" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="depositoAplazo" type="javax.swing.JRadioButton" visibility="private"/>
+        <Field name="deseaFiltroTipo" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="ejecutar" type="javax.swing.JButton" visibility="private"/>
+        <Field name="fechaF" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="fechaI" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="fondoInmobiliario" type="javax.swing.JRadioButton" visibility="private"/>
+        <Field name="fondoMutuo" type="javax.swing.JRadioButton" visibility="private"/>
+        <Field name="grupoDeBotones" type="javax.swing.ButtonGroup" visibility="private"/>
+        <Field name="jDateF" type="com.toedter.calendar.JDateChooser" visibility="private"/>
+        <Field name="jDateI" type="com.toedter.calendar.JDateChooser" visibility="private"/>
+        <Field name="jFileChooser1" type="javax.swing.JFileChooser" visibility="private"/>
+        <Field name="jSeparator1" type="javax.swing.JSeparator" visibility="private"/>
+        <Field name="jSeparator2" type="javax.swing.JSeparator" visibility="private"/>
+        <Field name="jSeparator3" type="javax.swing.JSeparator" visibility="private"/>
+        <Field name="jSeparator4" type="javax.swing.JSeparator" visibility="private"/>
+        <Field name="rangoFechas" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="sinFiltro" type="javax.swing.JRadioButton" visibility="private"/>
+        <Field name="titulo" type="javax.swing.JLabel" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="initComponents" returnType="// &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Generated Code&quot;&gt;//GEN-BEGIN:initComponents void" visibility="private"/>
+        <Method name="ejecutarActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="getFechaInicio" returnType="String" visibility="public"/>
+        <Method name="getFechaFin" returnType="String" visibility="public"/>
+        <Method name="getTipo" returnType="String" visibility="public"/>
+        <Method name="getEstado" returnType="boolean" visibility="public"/>
+        <Method name="cambiarEstado" returnType="void" visibility="public"/>
+        <Method name="fondoMutuoActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="main" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String" name="args"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="ProyectoBanco" package="proyectobanco" visibility="public" xPosition="1338.0" yPosition="657.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="main" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String[]" name="args"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="GestorDatos" package="tipoInv" visibility="public" isAbstract="true" xPosition="1027.0" yPosition="10.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="informe" returnType="String[][]" visibility="public" isAbstract="true"/>
+        <Method name="Filtro" returnType="ArrayList" visibility="public" isAbstract="true"/>
+        <Method name="getArchivo" returnType="IOContexto" visibility="public" isAbstract="true"/>
+        <Method name="quickSort" returnType="void" visibility="protected">
+          <Argument type="ArrayList" name="e"/>
+          <Argument type="int" name="izq"/>
+          <Argument type="int" name="der"/>
+        </Method>
+        <Method name="ConvertirFecha" returnType="Date" visibility="protected">
+          <Argument type="String" name="fecha"/>
+        </Method>
+        <Method name="Get" returnType="int" visibility="protected">
+          <Argument type="ArrayList" name="e"/>
+          <Argument type="int" name="i"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Monto" package="tipoInv" visibility="public" xPosition="1530.0" yPosition="534.0">
+      <Fields/>
+      <Constructors/>
+      <Methods/>
+    </Class>
+    <Class name="TipoInversion" package="tipoInv" visibility="public" xPosition="1027.0" yPosition="483.0">
+      <Fields>
+        <Field name="datos" type="Lista" visibility="private"/>
+        <Field name="filtro" type="ArrayList" visibility="private"/>
+        <Field name="ini" type="String" visibility="private"/>
+        <Field name="tip" type="String" visibility="private"/>
+        <Field name="archivo" type="IOContexto" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="arch"/>
+          <Argument type="String" name="i"/>
+          <Argument type="String" name="f"/>
+          <Argument type="String" name="t"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getArchivo" returnType="IOContexto" visibility="public"/>
+        <Method name="informe" returnType="String[][]" visibility="public"/>
+        <Method name="Filtro" returnType="ArrayList" visibility="public"/>
+        <Method name="setFiltro" returnType="ArrayList" visibility="private"/>
+      </Methods>
+    </Class>
+    <Interface name="ListaC" package="listas" visibility="public" xPosition="892.0" yPosition="774.0">
+      <Methods>
+        <Method name="clear" returnType="void" visibility="public"/>
+        <Method name="add" returnType="void" visibility="public">
+          <Argument type="Object" name="item"/>
+        </Method>
+        <Method name="remove" returnType="Object" visibility="public"/>
+        <Method name="setFirst" returnType="void" visibility="public"/>
+        <Method name="next" returnType="void" visibility="public"/>
+        <Method name="length" returnType="int" visibility="public"/>
+        <Method name="setValue" returnType="void" visibility="public">
+          <Argument type="Object" name="obj"/>
+        </Method>
+        <Method name="currValue" returnType="Object" visibility="public"/>
+        <Method name="isEmpty" returnType="boolean" visibility="public"/>
+        <Method name="eol" returnType="boolean" visibility="public"/>
+      </Methods>
+    </Interface>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations>
+    <HasRelation name="archivo" source="tipoInv.TipoInversion" target="Datos.IOContexto" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="Datos.IOContexto" target="listas.Lista" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="fec" source="listas.Inversion" target="proyectobanco.Fecha" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="Datos.IOLocal" target="Datos.IOContexto"/>
+    <UseRelation source="tipoInv.GestorDatos" target="Datos.IOContexto" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="datos" source="tipoInv.TipoInversion" target="listas.Lista" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="Lista"/>
+    <HasRelation name="inversiones" source="Datos.IOContexto" target="listas.Lista" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="Lista"/>
+    <IsRelation name="is" source="estadistica.Calculos" target="tipoInv.GestorDatos"/>
+    <ImplementsRelation name="&lt;&lt;implements&gt;&gt;" source="listas.Lista" target="listas.ListaC"/>
+    <UseRelation source="Datos.IOLocal" target="listas.Lista" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="estadistica.Calculos" target="tipoInv.GestorDatos" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="tipoInv.TipoInversion" target="Datos.IOContexto" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="listas.Inversion" target="proyectobanco.Fecha" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="Datos.IOExt" target="Datos.IOContexto"/>
+    <UseRelation source="estadistica.TendenciaCentral" target="Datos.IOContexto" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="Datos.IOExt" target="listas.Lista" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="listas.Nodo" target="listas.Nodo" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="estadistica.TablaHistograma" target="estadistica.Calculos"/>
+    <UseRelation source="estadistica.TablaHistograma" target="Datos.IOContexto" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="estadistica.TendenciaCentral" target="estadistica.Calculos"/>
+    <IsRelation name="is" source="tipoInv.TipoInversion" target="tipoInv.GestorDatos"/>
+    <HasRelation name="gDatos" source="estadistica.Calculos" target="tipoInv.GestorDatos" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+  </ClassDiagramRelations>
+</ClassDiagram>

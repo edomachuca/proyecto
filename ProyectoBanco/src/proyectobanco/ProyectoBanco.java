@@ -16,13 +16,7 @@ public class ProyectoBanco {
 
     public static void main(String[] args) throws IOException, NoDato, InterruptedException, Exception {
         
-        
-        
         IOContexto conn=new IOExt("Banco","","root","");
-        
-        //Cambios
-        
-        
         Menu x = new Menu();//Generamos el menú
         x.setVisible(true);//Mostramos el menú
 
@@ -52,9 +46,5 @@ public class ProyectoBanco {
         //Se finaliza la aplicación (menú)
         x.cambiarEstado();
         
-        
-        
-        
-        //Cambios 2
     }
 }

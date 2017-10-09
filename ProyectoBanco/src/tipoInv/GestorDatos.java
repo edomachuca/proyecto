@@ -3,6 +3,7 @@ package tipoInv;
 import listas.Inversion;
 import java.util.*;
 import Datos.IOContexto;
+import listas.Lista;
 /**
  *
  * @author BSOD
@@ -14,6 +15,10 @@ public abstract class GestorDatos {
     public abstract ArrayList Filtro();
 
     public abstract IOContexto getArchivo();
+    
+    protected Inversion getDefault(){
+        return new Inversion(0, 0, "GR", 0, 0, "00-ene-0000","00-ene-0000", "00-ene-0000");
+    }
 
     protected void quickSort(ArrayList e, int izq, int der) {
         Inversion piv = (Inversion) e.get(izq);
@@ -42,6 +47,20 @@ public abstract class GestorDatos {
         if (j + 1 < der) {
             quickSort(e, j + 1, der);
         }
+    }
+    
+    protected ArrayList FiltroFecha (Lista datos, Date i, Date f){
+        Lista d = datos;
+        ArrayList entrega = new ArrayList();
+
+        d.setFirst();
+        while (!d.eol()) {
+            if (((Inversion) d.currValue()).getFechas().getInicio().compareTo(i)>=0 && ((Inversion) d.currValue()).getFechas().getInicio().compareTo(f)<=0) {
+                entrega.add(d.currValue());
+            }
+            d.next();
+        }
+        return entrega;
     }
 
     protected Date ConvertirFecha(String fecha) {
