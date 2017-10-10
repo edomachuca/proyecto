@@ -35,8 +35,8 @@ public class ProyectoBanco {
                 + "\n PROCESANDO SOLICITUD..." + "\n");
 
         menu.setVisible(false);//Ocultamos el menú
-        //Se solicita el filtro de datos según los parámetros ingresados
         
+        //Se solicita el filtro de datos según los parámetros ingresados
         if(false){
             legacy = new TipoInversion("DatosSistemaLegacy.xlsx", menu.getFechaInicio(), menu.getFechaFin(), menu.getTipo());
         }else{

@@ -52,13 +52,11 @@ public final class IOLocal extends IOContexto {
 
             }
             if (j != 0) {
-                agregarDato(df);
+                agregarDatoL(df);
             }
             j++;
         }
-        if (file != null) {
-            file.close();
-        }
+        file.close();
     }
 
     private String agregarCelda(XSSFCell cell) throws NoDato {

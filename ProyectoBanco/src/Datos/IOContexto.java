@@ -49,12 +49,20 @@ public abstract class IOContexto {
     //LECTURA 
     public abstract void Lectura() throws IOException, NoDato, NumberFormatException;
     
-    protected void agregarDato(List<String> df) {
+    protected void agregarDatoL(List<String> df) {
         Cliente c = new Cliente(df.get(1), df.get(2));
         if (!clientes.contains(c)) {
             clientes.add(c);
         }
         inversiones.add(new Inversion(clientes.indexOf(c), (int) Double.parseDouble(df.get(0)), df.get(3), (int) Double.parseDouble(df.get(4)), Double.parseDouble(df.get(5)), df.get(7), df.get(8), df.get(9)));
+    }
+    
+    protected void agregarDatoE(List<String> df) {
+        Cliente c = new Cliente(df.get(9), df.get(10));
+        if (!clientes.contains(c)) {
+            clientes.add(c);
+        }
+        inversiones.add(new Inversion(clientes.indexOf(c), (int) Double.parseDouble(df.get(0)), df.get(2), (int) Double.parseDouble(df.get(3)), Double.parseDouble(df.get(4)), df.get(6), df.get(7), df.get(8)));
     }
     
     public Lista getLectura(){

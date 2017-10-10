@@ -123,7 +123,7 @@ public final class IOExt extends IOContexto{
             result = select.executeQuery("SELECT * FROM inversiones INNER JOIN clientes ON inversiones.cod_cli = clientes.cod_cli");
               while (result.next()) {
                 List<String> datosfila=migrarDato(result);
-                agregarDato(datosfila);
+                agregarDatoE(datosfila);
             }
             result.close();
         }catch(Exception e){}
