@@ -14,14 +14,14 @@ import proyectobanco.Fecha;
 
 public class Inversion {
 
-    private int id_inv;
-    private String tipo_inv;
-    private int mon_inv;
-    private double tasa_int;
-    private double mon_rec;
-    private Fecha fec;
+    private final int id_inv;
+    private final String tipo_inv;
+    private final int mon_inv;
+    private final double tasa_int;
+    private final double mon_rec;
+    private final Fecha fec;
     private boolean inv_cerrada;
-    private int indexCliente;
+    private final int indexCliente;
 
     public Inversion(int index, int id, String tipo, int montoInicial, double tasa, String fi, String ff, String fc) {
         indexCliente = index;

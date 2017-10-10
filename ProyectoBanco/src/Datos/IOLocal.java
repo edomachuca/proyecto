@@ -6,15 +6,10 @@
 package Datos;
 
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import listas.Cliente;
-import listas.Inversion;
-import listas.Lista;
 import listas.NoDato;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -23,19 +18,18 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
- * @author Mazhuka
+ * @author BSOD
  */
-public class IOLocal extends IOContexto {
-    
-   
-    
+public final class IOLocal extends IOContexto {
+
     public IOLocal(String nombre) throws NoDato, IOException {
         super(nombre);
-
+        Lectura();
     }
 
     @Override
-    public Lista Lectura() throws IOException, NoDato, NumberFormatException {
+    // LECTURA 
+    public void Lectura() throws IOException, NoDato, NumberFormatException {
         FileInputStream file = new FileInputStream(nomArchivo);
         XSSFWorkbook libro = new XSSFWorkbook(file);
         XSSFSheet hoja = libro.getSheetAt(0);
@@ -65,15 +59,6 @@ public class IOLocal extends IOContexto {
         if (file != null) {
             file.close();
         }
-        return inversiones;
-    }
-
-    private void agregarDato(List<String> df) {
-        Cliente c = new Cliente(df.get(1), df.get(2));
-        if (!clientes.contains(c)) {
-            clientes.add(c);
-        }
-        inversiones.add(new Inversion(clientes.indexOf(c), (int) Double.parseDouble(df.get(0)), df.get(3), (int) Double.parseDouble(df.get(4)), Double.parseDouble(df.get(5)), df.get(7), df.get(8), df.get(9)));
     }
 
     private String agregarCelda(XSSFCell cell) throws NoDato {
@@ -82,7 +67,8 @@ public class IOLocal extends IOContexto {
         }
         return cell.toString();
     }
-
+    
+    // ESCRITURA
     @Override
     public void Escritura(String[][] p,String nombreHoja) {
         EscribirLibro(p,nombreHoja);
@@ -92,6 +78,6 @@ public class IOLocal extends IOContexto {
     public void Escritura(String[][] q, String fi, String ff, String tipo) {
         EscribirLibro(q);
     }
-    
+    // FIN ESCRITURA
     
 }

@@ -6,12 +6,20 @@ package estadistica;
  * @author BSOD
  */
 import java.util.*;
+import listas.Inversion;
 import tipoInv.*;
 
-public abstract class Calculos extends GestorDatos {
+public abstract class Calculos{
 
-    private GestorDatos gDatos;
-
+    private final GestorDatos gDatos;
+    
+    // DATOS NECESARIOS PARA CLASES HIJAS
+    protected final int k;
+    protected String[][] datos;
+    protected String[][] tabla;
+    
+    //DATOS DE TENDENCIA CENTRAL
+    private final ArrayList lista;
     private double Varianza;
     private double Esperanza;
     private double Mediana;
@@ -19,12 +27,8 @@ public abstract class Calculos extends GestorDatos {
     private double desviacion;
     private double coefVar;
     private double MediaT;
-    private final int k;
-    private String[][] histograma;
-    private String[][] datos;
-    private String[][] tabla;
-    private ArrayList lista;
-
+    
+    // CONSTRUCTOR
     public Calculos(GestorDatos g) {
         gDatos = g;
         datos = new String[7][2];
@@ -33,11 +37,14 @@ public abstract class Calculos extends GestorDatos {
         } else {
             k = 1+ (int)(3.3*Math.log(gDatos.Filtro().size()));
         }
-        histograma = new String[k][gDatos.Filtro().size()];
         tabla = new String[k + 1][10];
         lista = gDatos.Filtro();
     }
     
+    // GENERA EL INFORME RESPECTIVO A CADA CLASE.
+    public abstract String[][] informe(boolean mostrar);
+    
+    // ZONA DE CALCULOS VARIOS: INTENCIÓN DE SER IMPLEMENTADAS A MAS CLASES A FUTURO.
     protected void Esperanza() {
         double suma = 0;
         for (int i = 0; i < lista.size(); i++) {
@@ -103,25 +110,9 @@ public abstract class Calculos extends GestorDatos {
         datos[5][1] = coefVar + "";
         return Varianza;
     }
-
-    protected GestorDatos getgDatos() {
-        return gDatos;
+    
+    // METODO PARA SIMPLIFICAR CODIGO INTERNO DE LAS CLASES
+    protected int Get(ArrayList e, int i) {
+        return ((Inversion) e.get(i)).getMontoI();
     }
-
-    protected int getK() {
-        return k;
-    }
-
-    protected String[][] getHistograma() {
-        return histograma;
-    }
-
-    protected String[][] getDatos() {
-        return datos;
-    }
-
-    protected String[][] getTabla() {
-        return tabla;
-    }
-
 }

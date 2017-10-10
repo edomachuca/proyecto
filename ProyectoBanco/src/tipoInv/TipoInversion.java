@@ -10,64 +10,55 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import listas.Inversion;
-import listas.Lista;
-import Datos.IOContexto;
-import Datos.IOExt;
-import Datos.IOLocal;
+
 
 /**
  *
  * @author BSOD
  */
 public class TipoInversion extends GestorDatos {
+    
+    private final ArrayList filtro;
+    private final String ini; 
+    private final String fin;
+    private final String tip;
 
-    private Lista datos;
-    private ArrayList filtro;
-    private String ini, fin;
-    private String tip;
-    private IOContexto archivo;
+    // CONSTRUCTORES 
+    public TipoInversion(String arch, String i, String f, String t) throws NoDato, IOException{
+        super(arch);
+        ini = i;
+        fin = f;
+        tip = t;
+        filtro = setFiltro(); 
+    }
 
-    public TipoInversion(String arch, String i, String f, String t) throws IOException, NoDato {
-        try {
-            archivo = new IOLocal(arch);
-            datos = archivo.Lectura();
+    public TipoInversion(String nombre,String dbName,String user, String pass, String i, String f, String t) throws IOException, NoDato, Exception {
+            super(nombre,dbName,user,pass);
             ini = i;
             fin = f;
             tip = t;
             filtro = setFiltro();
-        } catch (NullPointerException e) {
-            System.out.println("El archivo no existe.");
-        }
+    }
+
+    
+    // SALIDA DE DATOS
+    @Override
+    public void Escribir(String[][] p, String nombrehoja){
+        archivo.Escritura(p, nombrehoja);
     }
     
-    public TipoInversion(String nombre,String dbName,String user, String pass, String i, String f, String t) throws IOException, NoDato, Exception {
-        try {
-            archivo = new IOExt(nombre,dbName,user,pass);
-            datos = archivo.Lectura();
-            ini = i;
-            fin = f;
-            tip = t;
-            filtro = setFiltro();
-        } catch (NullPointerException e) {
-            System.out.println("El archivo no existe.");
-        }
-    }
-
     @Override
-    public IOContexto getArchivo() {
-        return archivo;
+    public void Escribir(String[][] q, String fi, String ff, String tipo){
+        archivo.Escritura(q, fi, ff, tipo);
     }
 
-    @Override
-    public String[][] informe(boolean mostrar) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    // GETTER FILTRO
     @Override
     public ArrayList Filtro() {
         return filtro;
     }
     
+    // BUILDER DEL FILTRO DE DATOS POR INVERSION
     private ArrayList setFiltro() {
         Date i = ConvertirFecha(ini);
         Date f = ConvertirFecha(fin);

@@ -3,7 +3,6 @@ package estadistica;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
-import Datos.IOContexto;
 import tipoInv.GestorDatos;
 
 /**
@@ -11,17 +10,16 @@ import tipoInv.GestorDatos;
  * @author BSOD
  */
 public class TablaHistograma extends Calculos {
-
+    private ArrayList n;
+    
     public TablaHistograma(GestorDatos g) {
         super(g);
+        n=g.Filtro();
     }
 
+    // GENERA TABLA
     @Override
     public String[][] informe(boolean mostrar) {
-        ArrayList n = Filtro();
-        String[][] tabla = super.getTabla();
-        String[][] histograma = super.getHistograma();
-        int k = super.getK();
         int[] largos = new int[10];
         
         tabla[0][0] = "N° clase";
@@ -50,7 +48,7 @@ public class TablaHistograma extends Calculos {
         int largo = mayor - menor;
         int rango = largo / k;
         double count = 0;
-        for (int c = 0; c < histograma.length; c++) { //k=15
+        for (int c = 0; c < k; c++) { //k=15
             double men = menor + (rango * c);
             double may = menor + (rango * (c + 1));
             double parcial = 0;
@@ -82,23 +80,13 @@ public class TablaHistograma extends Calculos {
         return tabla;
     }
 
-    @Override
-    public ArrayList Filtro() {
-        return super.getgDatos().Filtro();
-    }
-
-    @Override
-    public IOContexto getArchivo() {
-        return super.getgDatos().getArchivo();
-    }
-
     private String truncar(double d) {
         DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
         simbolos.setDecimalSeparator('.');
         DecimalFormat df = new DecimalFormat("#0.00000", simbolos); //entregaba un string del tipo 0,00000 (la coma no dejaba realizar el parseo al escribir en excel
         return df.format(d);
     }
-    
+   
     private void ImprimirPorPantalla(String[][] tabla,int[] largos){
         String esp = "                                        ";
         System.out.println("Tabla de frecuencias:");

@@ -1,7 +1,5 @@
 package estadistica;
 
-import java.util.ArrayList;
-import Datos.IOContexto;
 import tipoInv.GestorDatos;
 
 /**
@@ -16,7 +14,7 @@ public class TendenciaCentral extends Calculos {
 
     @Override
     public String[][] informe(boolean mostrar) {
-        String[][] d = super.getDatos();
+        String[][] d = datos;
 
         d[0][0] = "Esperanza: \t\t\t";
         super.Esperanza();
@@ -60,13 +58,8 @@ public class TendenciaCentral extends Calculos {
         System.out.println("");
 
     }
-    @Override
-    public ArrayList Filtro() {
-        return super.getgDatos().Filtro();
-    }
+    
 
-    @Override
-    public IOContexto getArchivo() {
-        return super.getgDatos().getArchivo();
-    }
+
+
 }

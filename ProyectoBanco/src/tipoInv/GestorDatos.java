@@ -3,18 +3,47 @@ package tipoInv;
 import listas.Inversion;
 import java.util.*;
 import Datos.IOContexto;
+import Datos.IOExt;
+import Datos.IOLocal;
+import java.io.IOException;
+import listas.Lista;
+import listas.NoDato;
 /**
  *
  * @author BSOD
  */
 public abstract class GestorDatos {
+    
+    protected IOContexto archivo;
+    protected Lista datos;
+    
+    // CONSTRUCTORES 
+    public GestorDatos(String arch) throws NoDato, IOException{
+        try{
+            archivo = new IOLocal(arch);
+            datos = archivo.getLectura();
+        }catch(Exception e){
+            System.out.println("El Archivo no existe");
+        }
+    }
+    
+    public GestorDatos(String nombre,String dbName,String user, String pass) throws NoDato, IOException{
+        try{
+            archivo = new IOExt(nombre,dbName,user,pass);
+            datos = archivo.getLectura();
+        }catch(Exception e){
+            System.out.println("El Archivo no existe");
+        }
+    }
 
-    public abstract String[][] informe(boolean mostrar);
-
+    // FILTRO RESPECTIVO
     public abstract ArrayList Filtro();
+    
+    // LLAMADO A METODOS DE ESCRITURA
+    public abstract void Escribir(String[][] p, String nombrehoja);
+    public abstract void Escribir(String[][] q, String fi, String ff, String tipo);
 
-    public abstract IOContexto getArchivo();
-
+    // ORDENAMIENTO DE DATOS: INVERSION MENOR A MAYOR
     protected void quickSort(ArrayList e, int izq, int der) {
         Inversion piv = (Inversion) e.get(izq);
         int pivote = Get(e, izq);
@@ -44,6 +73,11 @@ public abstract class GestorDatos {
         }
     }
 
+    // METODOS PROPIOS DE FUNCIONAMIENTO
+    protected int Get(ArrayList e, int i) {
+        return ((Inversion) e.get(i)).getMontoI();
+    }
+
     protected Date ConvertirFecha(String fecha) {
         if (fecha == null) {
             return null;
@@ -68,8 +102,8 @@ public abstract class GestorDatos {
             case "Mar": nuevaF[1] = 2 + ""; break;
             case "Apr": nuevaF[1] = 3 + "";  break;
             case "May": nuevaF[1] = 4 + "";  break;
-            case "Jun":  nuevaF[1] = 5 + ""; break;
-            case "Jul":  nuevaF[1] = 6 + ""; break;
+            case "Jun": nuevaF[1] = 5 + ""; break;
+            case "Jul": nuevaF[1] = 6 + ""; break;
             case "Agu": nuevaF[1] = 7 + ""; break;
             case "Aug": nuevaF[1] = 7 + ""; break;
             case "Sep": nuevaF[1] = 8 + ""; break;
@@ -81,9 +115,4 @@ public abstract class GestorDatos {
         Date nfecha = new Date(Integer.parseInt(nuevaF[2]) - 1900, Integer.parseInt(nuevaF[1]), Integer.parseInt(nuevaF[0]));
         return nfecha;
     }
-
-    protected int Get(ArrayList e, int i) {
-        return ((Inversion) e.get(i)).getMontoI();
-    }
-
 }

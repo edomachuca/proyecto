@@ -13,45 +13,48 @@ import tipoInv.TipoInversion;
 import tipoInv.GestorDatos;
 
 public class ProyectoBanco {
+    public static Menu menu;
+    public static GestorDatos legacy;
 
     public static void main(String[] args) throws IOException, NoDato, InterruptedException, Exception {
-                
-        //Cambios
         
-        
-        Menu x = new Menu();//Generamos el menú
-        x.setVisible(true);//Mostramos el menú
+        // DISPLAY DE MENU
+        menu = new Menu();//Generamos el menú
+        menu.setVisible(true);//Mostramos el menú
 
-        do {//Iteración para esperar las respuestas ingresadas a través del menú
+        //Iteración para esperar las respuestas ingresadas a través del menú
+        do {
             sleep(1000);
             System.out.print(".");
-        } while (!x.getEstado());
+        } while (!menu.getEstado());
+        
         //Se comienza a procesar la solicitud
         System.out.println("\n Su consulta fué realizada para las siguientes fechas:" + "\n"
-                + "\n   Fecha inicial: " + x.getFechaInicio()
-                + "\n   Fecha final:   " + x.getFechaFin() + "\n"
+                + "\n   Fecha inicial: " + menu.getFechaInicio()
+                + "\n   Fecha final:   " + menu.getFechaFin() + "\n"
                 + "\n PROCESANDO SOLICITUD..." + "\n");
 
-        x.setVisible(false);//Ocultamos el menú
+        menu.setVisible(false);//Ocultamos el menú
         //Se solicita el filtro de datos según los parámetros ingresados
         
+        if(false){
+            legacy = new TipoInversion("DatosSistemaLegacy.xlsx", menu.getFechaInicio(), menu.getFechaFin(), menu.getTipo());
+        }else{
+            legacy = new TipoInversion("Banco_peoplebank","","root","", menu.getFechaInicio(), menu.getFechaFin(), menu.getTipo());
+        }
         
-        //GestorDatos legacy = new TipoInversion("DatosSistemaLegacy.xlsx", x.getFechaInicio(), x.getFechaFin(), x.getTipo());
-        
-        GestorDatos legacy = new TipoInversion("Banco_peoplebank","","root","", x.getFechaInicio(), x.getFechaFin(), x.getTipo());
-
-
-//Se genera el informe con la tabla de frecuencias
-        legacy = new TablaHistograma(legacy);
-        String[][] p = legacy.informe(true);
+        Calculos Calculos;    
+        //Se genera el informe con la tabla de frecuencias
+        Calculos = new TablaHistograma(legacy);
+        String[][] p = Calculos.informe(true);
         //Se genera el informe con las medidas de tendencia central
-        legacy = new TendenciaCentral(legacy);
-        String[][] q = legacy.informe(true);
+        Calculos = new TendenciaCentral(legacy);
+        String[][] q = Calculos.informe(true);
         //Escribimos el informe en el archivo de salida (Excel)
-        legacy.getArchivo().Escritura(p,"Tabla de frecuencias_"+x.getTipo());
-        legacy.getArchivo().Escritura(q, x.getFechaInicio(), x.getFechaFin(), x.getTipo());
+        legacy.Escribir(p,"Tabla de frecuencias_"+menu.getTipo());
+        legacy.Escribir(q, menu.getFechaInicio(), menu.getFechaFin(), menu.getTipo());
         //Se finaliza la aplicación (menú)
-        x.cambiarEstado();
+        menu.cambiarEstado();
         
         
         

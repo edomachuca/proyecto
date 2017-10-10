@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import listas.Cliente;
+import listas.Inversion;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -29,6 +31,7 @@ public abstract class IOContexto {
     protected Lista inversiones;
     private XSSFWorkbook libroOut;
 
+    // CONSTRUCTOR STRATEGY
     public IOContexto(String nombre) throws NoDato, IOException, NumberFormatException {
         nomArchivo = nombre;
         clientes = new ArrayList();
@@ -36,19 +39,35 @@ public abstract class IOContexto {
         libroOut = new XSSFWorkbook();
     }
     
-     public IOContexto(String nombre,String dbname,String user, String pass) throws NoDato, IOException, NumberFormatException {
+    public IOContexto(String nombre,String dbname,String user, String pass) throws NoDato, IOException, NumberFormatException {
         nomArchivo = nombre;
         clientes = new ArrayList();
         inversiones = new Lista();
         libroOut = new XSSFWorkbook();
     }
 
-    public abstract Lista Lectura() throws IOException, NoDato, NumberFormatException;
+    //LECTURA 
+    public abstract void Lectura() throws IOException, NoDato, NumberFormatException;
     
+    protected void agregarDato(List<String> df) {
+        Cliente c = new Cliente(df.get(1), df.get(2));
+        if (!clientes.contains(c)) {
+            clientes.add(c);
+        }
+        inversiones.add(new Inversion(clientes.indexOf(c), (int) Double.parseDouble(df.get(0)), df.get(3), (int) Double.parseDouble(df.get(4)), Double.parseDouble(df.get(5)), df.get(7), df.get(8), df.get(9)));
+    }
+    
+    public Lista getLectura(){
+        return inversiones;
+    }
+   
+    //ESCRITURA
     public abstract void Escritura(String[][] p,String tipo);
     
     public abstract void Escritura(String[][] q, String fi, String ff, String tipo);
     
+    
+    // ESCRITURA INTERNA DE LAS RAMAS: COMÚN ENTRE AMBAS
     protected void EscribirLibro(String[][] p,String nombreHoja){
         XSSFSheet hoja = libroOut.createSheet(nombreHoja);
         for (int i = 0; i < p.length; i++) {
@@ -68,6 +87,7 @@ public abstract class IOContexto {
             }
         }
     }
+    
     protected void EscribirLibro(String[][] q){
             XSSFSheet hoja1 = libroOut.createSheet("Medidas de tendencia central");
         for (int i = 0; i < q.length; i++) {
@@ -86,6 +106,8 @@ public abstract class IOContexto {
         crearLibro(libroOut);
 
     }
+    
+    // BUILDER DEL ELEMENTO DE SALIDA DE LOS METODOS DE ESCRITURA.
     private void crearLibro(XSSFWorkbook libroEntrada){
          
         java.util.Date fecha = new Date();

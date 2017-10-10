@@ -9,7 +9,6 @@
 package Datos;
 
 import java.io.IOException;
-import listas.Lista;
 import listas.NoDato;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,23 +17,20 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import listas.Cliente;
-import listas.Inversion;
-
 
 
 /**
  *
- * @author Mazhuka
+ * @author BSOD
  */
-public class IOExt extends IOContexto{
+public final class IOExt extends IOContexto{
     private Connection conn;
     private final String driver="com.mysql.jdbc.Driver";
     private final String Est="Estadisticas";
     private final String TabF="TablaFrec";
     private int nro_con;
     
-    
+    // CONSTRUCTOR
     public IOExt(String nombre,String dbName,String user, String pass) throws Exception{
         super(nombre);
         String path="jdbc:mysql://localhost/";
@@ -70,8 +66,10 @@ public class IOExt extends IOContexto{
                 + "Primary KEY (nro_con,nro_class)");
         
         setNroConsulta();
+        Lectura();
     }
     
+    //METODOS PARA EL CONSTRUCTOR
     private void conectar(String url,String user, String pass ) throws Exception{
         try{
             Class.forName(driver).newInstance();
@@ -83,16 +81,19 @@ public class IOExt extends IOContexto{
     }
     }
 
-    public void cerrar() {
-        try {
-            if (conn != null) {
-                conn.close();
+    private void setNroConsulta(){
+        ResultSet result;
+        try{
+            Statement select = conn.createStatement();
+            result = select.executeQuery("SELECT * FROM "+Est+" WHERE nro_con=(SELECT max(nro_con) FROM "+Est+" )");
+            nro_con=1;
+            if(result.next()){
+                nro_con=result.getInt(1)+1;
             }
-            conn = null;
-        } catch (SQLException e) {
+        }catch(Exception e){
         }
     }
-    
+        
     private void UsarDB(String nombre){
         try{
         Statement st=conn.createStatement();
@@ -113,8 +114,9 @@ public class IOExt extends IOContexto{
         }catch(Exception e){} 
     }
     
+    // LECTURA 
     @Override
-    public Lista Lectura() throws IOException, NoDato, NumberFormatException {
+    public void Lectura() throws IOException, NoDato, NumberFormatException {
         ResultSet result;
         try {
             Statement select = conn.createStatement();
@@ -125,7 +127,6 @@ public class IOExt extends IOContexto{
             }
             result.close();
         }catch(Exception e){}
-        return inversiones;
      }
     
     private List<String> migrarDato(ResultSet r){
@@ -143,26 +144,8 @@ public class IOExt extends IOContexto{
         return datosfila;
     }
     
-    private void agregarDato(List<String> df) {
-        Cliente c = new Cliente(df.get(9), df.get(10));
-        if (!clientes.contains(c)) {
-            clientes.add(c);
-        }
-        inversiones.add(new Inversion(clientes.indexOf(c), (int) Double.parseDouble(df.get(0)), df.get(2), (int) Double.parseDouble(df.get(3)), Double.parseDouble(df.get(4)), df.get(6), df.get(7), df.get(8)));
-    }
-     
-    private void insertarDato(String table, String Atts, String dats) {
-        try {
-            Statement insertar = conn.createStatement();
-            insertar.executeUpdate("INSERT INTO " + table + " (" + Atts + ") VALUES(" + dats + ")");
-            
-            //System.out.println("INSERT INTO " + table + " (" + Atts + ") VALUES(" + dats + ")");
-        } catch (Exception e) {
-            //System.out.println("error INSERT INTO " + table + " (" + Atts + ") VALUES(" + dats + ")");
-        }
-    }
-    
-    //Este método escribe en tabla
+    // ESCRITURA
+    // ESCRITURA DE TABLA
     @Override
     public void Escritura(String[][] p, String nombreHoja) {
         EscribirLibro(p,nombreHoja);
@@ -177,7 +160,7 @@ public class IOExt extends IOContexto{
 
     }
 
-    //Este método escribe en estadisticas
+    // ESCRITURA DE TENDENCIA
     @Override
     public void Escritura(String[][] q, String fi, String ff, String tipo) {
         EscribirLibro(q);
@@ -193,17 +176,27 @@ public class IOExt extends IOContexto{
         
         cerrar();
     }
-
-    private void setNroConsulta(){
-        ResultSet result;
-        try{
-            Statement select = conn.createStatement();
-            result = select.executeQuery("SELECT * FROM "+Est+" WHERE nro_con=(SELECT max(nro_con) FROM "+Est+" )");
-            nro_con=1;
-            if(result.next()){
-                nro_con=result.getInt(1)+1;
+    
+    // METODOS PARA LA ESCRITURA
+    private void insertarDato(String table, String Atts, String dats) {
+        try {
+            Statement insertar = conn.createStatement();
+            insertar.executeUpdate("INSERT INTO " + table + " (" + Atts + ") VALUES(" + dats + ")");
+            
+            //System.out.println("INSERT INTO " + table + " (" + Atts + ") VALUES(" + dats + ")");
+        } catch (Exception e) {
+            //System.out.println("error INSERT INTO " + table + " (" + Atts + ") VALUES(" + dats + ")");
+        }
+    }
+    
+    // CIERRE DE CONEXION.
+    public void cerrar() {
+        try {
+            if (conn != null) {
+                conn.close();
             }
-        }catch(Exception e){
+            conn = null;
+        } catch (SQLException e) {
         }
     }
     
