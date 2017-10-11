@@ -1,4 +1,3 @@
-
 //HOLA ESTOY PROBANDO
 
 /*
@@ -21,27 +20,25 @@ import java.util.List;
 import listas.Cliente;
 import listas.Inversion;
 
-
-
 /**
  *
  * @author Mazhuka
  */
-public class IOExt extends IOContexto{
+public class IOExt extends IOContexto {
+
     private Connection conn;
-    private final String driver="com.mysql.jdbc.Driver";
-    private final String Est="Estadisticas";
-    private final String TabF="TablaFrec";
+    private final String driver = "com.mysql.jdbc.Driver";
+    private final String Est = "Estadisticas";
+    private final String TabF = "TablaFrec";
     private int nro_con;
-    
-    
-    public IOExt(String nombre,String dbName,String user, String pass) throws Exception{
+
+    public IOExt(String nombre, String dbName, String user, String pass) throws Exception {
         super(nombre);
-        String path="jdbc:mysql://localhost/";
-        conectar(path+dbName,user,pass);
+        String path = "jdbc:mysql://localhost/";
+        conectar(path + dbName, user, pass);
         //INSERTAR CODIGO AQUI
         UsarDB(nombre);
-        crearTabla(Est,""
+        crearTabla(Est, ""
                 + " nro_con INT NOT NULL AUTO_INCREMENT,"
                 + " Esperanza INT,"
                 + " Varianza DOUBLE,"
@@ -54,8 +51,8 @@ public class IOExt extends IOContexto{
                 + " Fecha_i varchar(11) NOT NULL,"
                 + " fecha_f varchar(11) NOT NULL,"
                 + " Primary KEY (nro_con)");
-        
-        crearTabla(TabF,""
+
+        crearTabla(TabF, ""
                 + "nro_con INT NOT NULL,"
                 + "nro_class INT,"
                 + "L_inf INT,"
@@ -68,19 +65,20 @@ public class IOExt extends IOContexto{
                 + "frec_a Decimal(6,5),"
                 + "prctj_a Decimal(6,3), "
                 + "Primary KEY (nro_con,nro_class)");
-        
+
         setNroConsulta();
     }
-    
-    private void conectar(String url,String user, String pass ) throws Exception{
-        try{
+
+    private void conectar(String url, String user, String pass) throws Exception {
+        try {
             Class.forName(driver).newInstance();
-            conn=DriverManager.getConnection(url,user,pass);
-            if(!conn.isClosed())
+            conn = DriverManager.getConnection(url, user, pass);
+            if (!conn.isClosed()) {
                 System.out.println("Conexión realizada");
-        }catch(SQLException e){
-                System.out.println("Error en la Conexión");
-    }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error en la Conexión");
+        }
     }
 
     public void cerrar() {
@@ -92,57 +90,61 @@ public class IOExt extends IOContexto{
         } catch (SQLException e) {
         }
     }
-    
-    private void UsarDB(String nombre){
-        try{
-        Statement st=conn.createStatement();
-        st.executeUpdate("USE "+nombre);
-        }catch(Exception e){
-        Statement st;  
+
+    private void UsarDB(String nombre) {
+        try {
+            Statement st = conn.createStatement();
+            st.executeUpdate("USE " + nombre);
+        } catch (Exception e) {
+            Statement st;
             try {
                 st = conn.createStatement();
-                st.executeUpdate("CREATE DATABASE "+nombre+";");
-            } catch (SQLException ex) {}
+                st.executeUpdate("CREATE DATABASE " + nombre + ";");
+            } catch (SQLException ex) {
+            }
         }
     }
-    
-    private void crearTabla(String nombre,String Att){
-        try{
-        Statement st=conn.createStatement();
-        st.executeUpdate("CREATE TABLE "+nombre+" ("+Att+");");
-        }catch(Exception e){} 
+
+    private void crearTabla(String nombre, String Att) {
+        try {
+            Statement st = conn.createStatement();
+            st.executeUpdate("CREATE TABLE " + nombre + " (" + Att + ");");
+        } catch (Exception e) {
+        }
     }
-    
+
     @Override
     public Lista Lectura() throws IOException, NoDato, NumberFormatException {
         ResultSet result;
         try {
             Statement select = conn.createStatement();
             result = select.executeQuery("SELECT * FROM inversiones INNER JOIN clientes ON inversiones.cod_cli = clientes.cod_cli");
-              while (result.next()) {
-                List<String> datosfila=migrarDato(result);
+            while (result.next()) {
+                List<String> datosfila = migrarDato(result);
                 agregarDato(datosfila);
             }
             result.close();
-        }catch(Exception e){}
+        } catch (Exception e) {
+        }
         return inversiones;
-     }
-    
-    private List<String> migrarDato(ResultSet r){
-        List<String> datosfila=new ArrayList();
-        try{
-            int largo=r.getMetaData().getColumnCount()+1;
-            for(int i=1;i<largo;i++) {
-                try{
-                datosfila.add(r.getString(i));              
-                }catch(Exception e){
-                datosfila.add(null); 
+    }
+
+    private List<String> migrarDato(ResultSet r) {
+        List<String> datosfila = new ArrayList();
+        try {
+            int largo = r.getMetaData().getColumnCount() + 1;
+            for (int i = 1; i < largo; i++) {
+                try {
+                    datosfila.add(r.getString(i));
+                } catch (Exception e) {
+                    datosfila.add(null);
                 }
             }
-        }catch(Exception e){}
+        } catch (Exception e) {
+        }
         return datosfila;
     }
-    
+
     private void agregarDato(List<String> df) {
         Cliente c = new Cliente(df.get(9), df.get(10));
         if (!clientes.contains(c)) {
@@ -150,29 +152,29 @@ public class IOExt extends IOContexto{
         }
         inversiones.add(new Inversion(clientes.indexOf(c), (int) Double.parseDouble(df.get(0)), df.get(2), (int) Double.parseDouble(df.get(3)), Double.parseDouble(df.get(4)), df.get(6), df.get(7), df.get(8)));
     }
-     
+
     private void insertarDato(String table, String Atts, String dats) {
         try {
             Statement insertar = conn.createStatement();
             insertar.executeUpdate("INSERT INTO " + table + " (" + Atts + ") VALUES(" + dats + ")");
-            
+
             //System.out.println("INSERT INTO " + table + " (" + Atts + ") VALUES(" + dats + ")");
         } catch (Exception e) {
             //System.out.println("error INSERT INTO " + table + " (" + Atts + ") VALUES(" + dats + ")");
         }
     }
-    
+
     //Este método escribe en tabla
     @Override
     public void Escritura(String[][] p, String nombreHoja) {
-        EscribirLibro(p,nombreHoja);
-        String Atts="nro_con,nro_class,L_inf,L_sup,Marca,Obs,frec,prctj,Obs_a,frec_a,prctj_a";
-        for(int i=1;i<p.length;i++){
-            String dats="'"+nro_con+"'";
-            for(int j=0;j<p[0].length;j++){
-                dats+=", '"+p[i][j].trim()+"'";
+        EscribirLibro(p, nombreHoja);
+        String Atts = "nro_con,nro_class,L_inf,L_sup,Marca,Obs,frec,prctj,Obs_a,frec_a,prctj_a";
+        for (int i = 1; i < p.length; i++) {
+            String dats = "'" + nro_con + "'";
+            for (int j = 0; j < p[0].length; j++) {
+                dats += ", '" + p[i][j].trim() + "'";
             }
-            insertarDato(TabF,Atts,dats);
+            insertarDato(TabF, Atts, dats);
         }
 
     }
@@ -181,30 +183,30 @@ public class IOExt extends IOContexto{
     @Override
     public void Escritura(String[][] q, String fi, String ff, String tipo) {
         EscribirLibro(q);
-        String Atts="Esperanza,Varianza ,Mediana , Moda , Des_stand , Coef_var , Media_T , Tipo_f , Fecha_i, fecha_f ";
-        for(int i=1;i<q[0].length;i++){
-            String dats="";
-            for(int j=0;j<q.length;j++){
-                dats+="'"+q[j][i].trim()+"',";
+        String Atts = "Esperanza,Varianza ,Mediana , Moda , Des_stand , Coef_var , Media_T , Tipo_f , Fecha_i, fecha_f ";
+        for (int i = 1; i < q[0].length; i++) {
+            String dats = "";
+            for (int j = 0; j < q.length; j++) {
+                dats += "'" + q[j][i].trim() + "',";
             }
-            dats+="'"+tipo+"','"+fi+"','"+ff+"'";
-            insertarDato(Est,Atts,dats);
+            dats += "'" + tipo + "','" + fi + "','" + ff + "'";
+            insertarDato(Est, Atts, dats);
         }
-        
+
         cerrar();
     }
 
-    private void setNroConsulta(){
+    private void setNroConsulta() {
         ResultSet result;
-        try{
+        try {
             Statement select = conn.createStatement();
-            result = select.executeQuery("SELECT * FROM "+Est+" WHERE nro_con=(SELECT max(nro_con) FROM "+Est+" )");
-            nro_con=1;
-            if(result.next()){
-                nro_con=result.getInt(1)+1;
+            result = select.executeQuery("SELECT * FROM " + Est + " WHERE nro_con=(SELECT max(nro_con) FROM " + Est + " )");
+            nro_con = 1;
+            if (result.next()) {
+                nro_con = result.getInt(1) + 1;
             }
-        }catch(Exception e){
+        } catch (Exception e) {
         }
     }
-    
+
 }

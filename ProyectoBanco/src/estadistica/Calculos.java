@@ -28,14 +28,14 @@ public abstract class Calculos extends GestorDatos {
     public Calculos(GestorDatos g) {
         gDatos = g;
         datos = new String[7][2];
-        if (1+ (int)(3.3*Math.log(gDatos.Filtro().size())) > 15) {
+        lista = gDatos.Filtro();
+        if (1 + (int)(3.3*Math.log(lista.size())) > 15) {
             k = 15;
         } else {
-            k = 1+ (int)(3.3*Math.log(gDatos.Filtro().size()));
+            k = 1+ (int)(3.3*Math.log(lista.size()));
         }
-        histograma = new String[k][gDatos.Filtro().size()];
+        histograma = new String[k][lista.size()];
         tabla = new String[k + 1][10];
-        lista = gDatos.Filtro();
     }
     
     protected void Esperanza() {

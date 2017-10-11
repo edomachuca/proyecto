@@ -16,9 +16,6 @@ public class ProyectoBanco {
 
     public static void main(String[] args) throws IOException, NoDato, InterruptedException, Exception {
                 
-        //Cambios
-        
-        
         Menu x = new Menu();//Generamos el menú
         x.setVisible(true);//Mostramos el menú
 
@@ -36,12 +33,12 @@ public class ProyectoBanco {
         //Se solicita el filtro de datos según los parámetros ingresados
         
         
-        //GestorDatos legacy = new TipoInversion("DatosSistemaLegacy.xlsx", x.getFechaInicio(), x.getFechaFin(), x.getTipo());
+        GestorDatos legacy = new TipoInversion("DatosSistemaLegacy.xlsx", x.getFechaInicio(), x.getFechaFin(), x.getTipo());
         
-        GestorDatos legacy = new TipoInversion("Banco_peoplebank","","root","", x.getFechaInicio(), x.getFechaFin(), x.getTipo());
+        //GestorDatos legacy = new TipoInversion("Banco_peoplebank","","root","", x.getFechaInicio(), x.getFechaFin(), x.getTipo());
 
 
-//Se genera el informe con la tabla de frecuencias
+        //Se genera el informe con la tabla de frecuencias
         legacy = new TablaHistograma(legacy);
         String[][] p = legacy.informe(true);
         //Se genera el informe con las medidas de tendencia central
@@ -53,9 +50,5 @@ public class ProyectoBanco {
         //Se finaliza la aplicación (menú)
         x.cambiarEstado();
         
-        
-        
-        
-        //Cambios 2
     }
 }

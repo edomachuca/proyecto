@@ -21,7 +21,7 @@ public class Menu extends javax.swing.JFrame {
     private String fechaInicio;
     private String fechaFin;
     private String tipo;
-    private boolean estado;
+    private boolean estado, medidasTC;
 
     /**
      * Creates new form Menu
@@ -32,6 +32,7 @@ public class Menu extends javax.swing.JFrame {
         fechaFin = null;
         tipo = null;
         estado = false;
+        medidasTC = false;
     }
 
     /**
@@ -63,6 +64,8 @@ public class Menu extends javax.swing.JFrame {
         fondoInmobiliario = new javax.swing.JRadioButton();
         bonos = new javax.swing.JRadioButton();
         sinFiltro = new javax.swing.JRadioButton();
+        jSeparator5 = new javax.swing.JSeparator();
+        jCheckBox1 = new javax.swing.JCheckBox();
         grupoDeBotones.add(fondoMutuo);
         grupoDeBotones.add(depositoAplazo);
 
@@ -108,7 +111,11 @@ public class Menu extends javax.swing.JFrame {
         bonos.setText("Bonos");
 
         grupoDeBotones.add(sinFiltro);
+        sinFiltro.setSelected(true);
         sinFiltro.setText("Sin filtro");
+        sinFiltro.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        jCheckBox1.setText("Medidas de tendencia central");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -123,20 +130,8 @@ public class Menu extends javax.swing.JFrame {
                     .addComponent(jSeparator4))
                 .addGap(10, 10, 10))
             .addGroup(layout.createSequentialGroup()
-                .addGap(100, 100, 100)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(bsod)
-                    .addComponent(titulo)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(62, 62, 62)
-                        .addComponent(ejecutar)))
-                .addContainerGap(100, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addGap(74, 74, 74)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(bonos)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(rangoFechas)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -144,13 +139,14 @@ public class Menu extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jDateI, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(fechaI))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jDateF, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(fechaF))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(59, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(bonos)
                             .addComponent(depositoAplazo)
                             .addComponent(fondoInmobiliario)
                             .addGroup(layout.createSequentialGroup()
@@ -159,6 +155,24 @@ public class Menu extends javax.swing.JFrame {
                                 .addComponent(sinFiltro))
                             .addComponent(deseaFiltroTipo))
                         .addGap(0, 0, Short.MAX_VALUE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jSeparator5)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(100, 100, 100)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(bsod)
+                            .addComponent(titulo)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGap(62, 62, 62)
+                                .addComponent(ejecutar))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(74, 74, 74)
+                        .addComponent(jCheckBox1)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -175,6 +189,7 @@ public class Menu extends javax.swing.JFrame {
                     .addComponent(fechaF))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jDateF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jDateI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -190,12 +205,13 @@ public class Menu extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(fondoInmobiliario)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(bonos)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jSeparator1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jDateF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(148, 148, 148)))
+                        .addComponent(bonos)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addComponent(jCheckBox1)
+                .addGap(18, 18, 18)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ejecutar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -271,9 +287,16 @@ public class Menu extends javax.swing.JFrame {
                         "¡Paciencia!", JOptionPane.INFORMATION_MESSAGE);
             }
         }
+        
+        if (jCheckBox1.isSelected())
+            medidasTC = true;
 
     }//GEN-LAST:event_ejecutarActionPerformed
 
+    public boolean getInformeExtra() {
+        return medidasTC;
+    }
+    
     public String getFechaInicio() {
         return fechaInicio;
     }
@@ -363,6 +386,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JRadioButton fondoInmobiliario;
     private javax.swing.JRadioButton fondoMutuo;
     private javax.swing.ButtonGroup grupoDeBotones;
+    private javax.swing.JCheckBox jCheckBox1;
     private com.toedter.calendar.JDateChooser jDateF;
     private com.toedter.calendar.JDateChooser jDateI;
     private javax.swing.JFileChooser jFileChooser1;
@@ -370,6 +394,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
+    private javax.swing.JSeparator jSeparator5;
     private javax.swing.JLabel rangoFechas;
     private javax.swing.JRadioButton sinFiltro;
     private javax.swing.JLabel titulo;
